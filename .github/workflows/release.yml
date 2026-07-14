@@ -1,0 +1,60 @@
+name: release
+
+# Tag-gated crates.io release. Push a tag `vX.Y.Z` (matching the workspace
+# version) to publish both crates in dependency order.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish-crates:
+    name: publish to crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: rustup show
+
+      - name: Verify tag matches workspace version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VER="$(grep -m1 '^version = ' Cargo.toml | tr -d '" ' | cut -d= -f2)"
+          if [ "$TAG" != "$VER" ]; then
+            echo "::error::release tag ${GITHUB_REF_NAME} (=${TAG}) does not match workspace version ${VER}"
+            exit 1
+          fi
+          echo "tag and version agree on ${VER}"
+
+      # types <- core: publish types first, wait for the index, then core.
+      - name: Publish action-gate-types
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: .github/publish-crate.sh action-gate-types
+
+      - name: Wait for action-gate-types to be resolvable
+        run: |
+          for i in $(seq 1 30); do
+            if cargo search action-gate-types | grep -q '^action-gate-types = "0'; then
+              echo "action-gate-types is on the index"; break
+            fi
+            echo "waiting for index propagation ($i)"; sleep 10
+          done
+
+      - name: Publish action-gate-core
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: .github/publish-crate.sh action-gate-core
+
+  github-release:
+    name: create GitHub Release
+    needs: publish-crates
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true

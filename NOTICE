@@ -1,0 +1,33 @@
+action-gate
+Copyright 2026 Bartek Kus
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+--------------------------------------------------------------------------------
+Relicensed source (authorized)
+--------------------------------------------------------------------------------
+
+The gate machinery, the canonical decision serialization, and the two generic
+reference checks (secrets, allowlist) were extracted from the Open Agentic
+Platform (OAP), `crates/policy-kernel/lib.rs`, where they carry an SPDX header
+reading `AGPL-3.0-or-later`. Relicensing this extracted source to Apache-2.0 is
+the prerogative of the sole copyright holder (Bartek Kus) and is an explicit,
+authorized act.
+
+This is the Case-B extraction: OAP's `evaluate()` hardcoded six checks in a
+fixed order over a code-governance-shaped `ToolCallContext`. The generic library
+keeps the outcome enum, the pure-function property, and the canonical
+serialization, and lifts the check set into a pluggable `Check` registry over a
+domain-neutral `ActionContext`. OAP's four domain checks (destructive-op,
+spec-status, spec-risk, diff-size) are NOT in this library; they stay in OAP as
+registered checks. Only the two genuinely domain-neutral checks (secrets
+scanning, action allowlist) are shipped here, behind the optional `checks-common`
+feature. OAP's `PolicyBundle` / `PolicyRule` config model is not adopted; checks
+self-configure.
+
+Reproducible decision hashing rests on `canonical-keysort-json`, itself
+extracted and relicensed Apache-2.0 from OAP's `crates/canonical-json`.
+
+A forthcoming OAP extraction spec (analogous to spec 219 for tenant-tail)
+formalizes the vend; the interim record is
+`chancery/docs/preliminary/00-extraction-overview.md` and `02-action-gate.md`.

@@ -1,0 +1,42 @@
+# action-gate-core: the Gate + builder that runs an ordered Check registry, a
+# stable config hash for binding a decision to the gate that produced it,
+# canonical decision serialization, and (behind the optional `checks-common`
+# feature) two generic reference checks: secrets scanning and an action
+# allowlist.
+
+[package]
+name = "action-gate-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+description = "The action-gate Gate: a pure, deterministic decision engine over a pluggable, ordered Check registry, with a stable config hash and optional common checks."
+keywords = ["policy", "gate", "governance", "decision", "deterministic"]
+categories = ["algorithms", "data-structures"]
+readme = "../../README.md"
+include = ["src/**", "Cargo.toml"]
+
+[features]
+default = []
+# Ships two generic reference checks (SecretsCheck, AllowlistCheck). Off by
+# default so the pure core carries no regex dependency unless a consumer wants
+# the common checks.
+checks-common = ["dep:regex"]
+
+[dependencies]
+action-gate-types = { workspace = true }
+canonical-keysort-json = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+regex = { workspace = true, optional = true }
+
+[lints]
+workspace = true
+
+[package.metadata.action-gate]
+spec = "000-action-gate-bootstrap"
