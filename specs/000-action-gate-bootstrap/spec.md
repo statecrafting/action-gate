@@ -34,7 +34,7 @@ references:
 
 ## 1. Purpose
 
-action-gate is the decision primitive of the `stagecraft-ing`
+action-gate is the decision primitive of the `statecrafting`
 reusable-primitive family. It answers one question deterministically: given a
 proposed action and an ordered set of checks, is the action allowed, denied, or
 to be degraded? The gate is a pure function of `(context, checks)`, so the same

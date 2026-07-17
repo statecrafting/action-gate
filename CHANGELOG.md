@@ -23,4 +23,4 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   its `PolicyBundle` config model is not adopted (checks self-configure). See
   `NOTICE`.
 
-[0.1.0]: https://github.com/stagecraft-ing/action-gate/releases/tag/v0.1.0
+[0.1.0]: https://github.com/statecrafting/action-gate/releases/tag/v0.1.0

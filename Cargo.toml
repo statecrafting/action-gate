@@ -28,8 +28,8 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.85"
 license = "Apache-2.0"
-repository = "https://github.com/stagecraft-ing/action-gate"
-homepage = "https://github.com/stagecraft-ing/action-gate"
+repository = "https://github.com/statecrafting/action-gate"
+homepage = "https://github.com/statecrafting/action-gate"
 authors = ["The action-gate Authors"]
 
 [workspace.dependencies]

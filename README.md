@@ -63,7 +63,7 @@ serialization for hashing and comparison.
 
 ## Ecosystem
 
-Part of the `stagecraft-ing` reusable-primitive family, extracted from the Open
+Part of the `statecrafting` reusable-primitive family, extracted from the Open
 Agentic Platform (`crates/policy-kernel/lib.rs`) and relicensed Apache-2.0 by
 the sole copyright holder (see `NOTICE`). It depends on `canonical-keysort-json`
 for reproducible decision serialization. This repo is self-governed by its own
