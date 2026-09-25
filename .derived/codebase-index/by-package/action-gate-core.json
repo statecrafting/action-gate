@@ -1,0 +1,10 @@
+{
+  "package": {
+    "kind": "rust-lib",
+    "name": "action-gate-core",
+    "path": "crates/core",
+    "specRef": "000-action-gate-bootstrap"
+  },
+  "schemaVersion": "1.1.0",
+  "shardHash": "e26a11eb86161ea209bcfec9fcf1dfb626f5dbbab2a46c4c00ac26a60b83f85e"
+}

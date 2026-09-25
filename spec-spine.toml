@@ -1,10 +1,13 @@
 # spec-spine governing the action-gate repository (dogfood).
 #
 # action-gate vends a two-crate pure decision gate; its own specs/ corpus is
-# governed by the published spec-spine library, pinned as a dev dependency and
-# invoked as `npx --no-install spec-spine {compile,lint,index check,couple}`.
-# This is the same dogfooding pattern spec-spine, OAP, tenant-emit, tenant-tail,
-# and canonical-keysort-json all follow.
+# governed by the spec-spine CLI (crate `spec-spine-cli`), pinned below by
+# [meta] required_version and installed into the git-ignored `.tooling/` by
+# `make tools`. `make gate` runs check, lint, couple and index coverage with
+# that binary; the compiled registry and index are committed under .derived/.
+
+[meta]
+required_version = "=0.26.0"
 
 [manifest]
 metadata_namespace = "action-gate"
@@ -21,13 +24,22 @@ derived_dir   = ".derived"
 standards_dir = "standards/spec"
 schemas_dir   = "standards/schemas"
 cargo_workspace = "Cargo.toml"
-npm_workspaces = ["package.json", "pnpm-workspace.yaml"]
+npm_workspaces = []  # none: this is a Rust-only repository
 standalone_rust_workspaces = []
 standalone_npm_packages    = []
 
 [index]
-extra_hashed_inputs = ["standards/**/*", ".github/workflows/**/*"]
-resolver_exclusions = ["target", "node_modules", ".derived", "dist", "build"]
+# The claimed workspace manifest and crate trees are hashed whole (L-008): a
+# change to any of them restamps every shard, so `make gate` fails until
+# .derived/ is regenerated. With two specs over six source files that is
+# cheaper and simpler than per-symbol claims.
+extra_hashed_inputs = [
+  "standards/**/*",
+  ".github/workflows/**/*",
+  "Cargo.toml",
+  "crates/**/*",
+]
+resolver_exclusions = ["target", ".tooling", ".derived", "dist", "build"]
 
 [branding]
 compiler_id = "spec-spine"

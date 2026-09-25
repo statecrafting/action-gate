@@ -1,0 +1,148 @@
+{
+  "mapping": {
+    "implementingPaths": [
+      {
+        "path": "Cargo.toml",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core",
+        "source": "manifest-metadata"
+      },
+      {
+        "path": "crates/core/Cargo.toml",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/src/checks.rs",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/src/lib.rs",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/types",
+        "source": "manifest-metadata"
+      },
+      {
+        "path": "crates/types/Cargo.toml",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/types/src/lib.rs",
+        "source": "spec-edge"
+      }
+    ],
+    "resolvedUnits": [
+      {
+        "locations": [
+          {
+            "file": "Cargo.toml"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "Cargo.toml"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/Cargo.toml"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/Cargo.toml"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/src/checks.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/src/checks.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/src/lib.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/src/lib.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/types/Cargo.toml"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/types/Cargo.toml"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/types/src/lib.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/types/src/lib.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "NOTICE"
+          }
+        ],
+        "ownership": false,
+        "sourceField": "references",
+        "unit": {
+          "kind": "file",
+          "path": "NOTICE"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "README.md"
+          }
+        ],
+        "ownership": false,
+        "sourceField": "references",
+        "unit": {
+          "kind": "file",
+          "path": "README.md"
+        }
+      }
+    ],
+    "specId": "000-action-gate-bootstrap",
+    "specStatus": "draft"
+  },
+  "schemaVersion": "1.1.0",
+  "shardHash": "e7b4279834b805fce7c22767cac46bb14121b0fa9903eb29642675465b9e4691"
+}
