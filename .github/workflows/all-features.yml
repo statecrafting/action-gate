@@ -1,0 +1,40 @@
+# Clippy and test with --all-features, so the optional checks-common and
+# golden-vectors code is linted and tested. The profile's `code` job runs
+# build, test, clippy and fmt with default features only; this workflow
+# covers what that job leaves out and nothing it already runs.
+#
+# Not managed by Statecraft. statecraft-ci.yml calls it as the job
+# `all-features`, declared in ci.extra_required_jobs in
+# .statecraft/environment.json, and ci-gate blocks on it as on its own jobs.
+name: all-features
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  all-features:
+    name: clippy + test (all features)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      # rust-toolchain.toml pins the channel and the rustfmt and clippy
+      # components; rustup installs it on the first cargo invocation.
+      - name: Cache cargo registry, git and target
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-all-features-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: |
+            cargo-all-features-${{ runner.os }}-
+      - name: Clippy (deny warnings)
+        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+      - name: Test
+        run: cargo test --workspace --all-features --locked

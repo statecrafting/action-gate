@@ -40,9 +40,9 @@
         "kind": "template",
         "identity": "statecraft-setup:github-actions-rust@7"
       },
-      "digest": "c2fd19542d950352bfeb2adc6be3a527b2aede2d089e7c18e895fd1d775f36e9",
-      "bytes": 14756,
-      "written_at": "2026-09-25T17:05:32Z"
+      "digest": "45c70467cc27337964923d6498718d9d88e97ecfa4836c680961e624ac1b2323",
+      "bytes": 14857,
+      "written_at": "2026-09-25T18:15:33Z"
     },
     {
       "path": ".statecraft/AGENTS.md",
@@ -62,9 +62,9 @@
         "kind": "template",
         "identity": "statecraft-setup:github-actions-rust@7"
       },
-      "digest": "09fc6c2c57dfd4fd80b6ccbf77a7650a36eaf689b1477cb2f267fef6c8ad7b94",
-      "bytes": 8552,
-      "written_at": "2026-09-25T17:05:52Z"
+      "digest": "597424c7ade868f9a94b0821bc9fc3697e24b93deeb0e1c05b101ca4d2062ceb",
+      "bytes": 8931,
+      "written_at": "2026-09-25T18:15:33Z"
     },
     {
       "path": "scripts/statecraft/ai-review.sh",
@@ -200,6 +200,12 @@
       "revision": 7,
       "identity": "8ea41428995187dbd49555e5cddec56dd80beeda5f0f2213216d47b511f79f65",
       "parameters": {
+        "ci.extra_required_jobs": [
+          {
+            "job": "all-features",
+            "workflow": ".github/workflows/all-features.yml"
+          }
+        ],
         "governance.authored_content": "scripts/check-authored-content.sh",
         "governance.authored_content_text": true,
         "governance.enforce_coverage": true,

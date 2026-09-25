@@ -78,7 +78,7 @@
   },
   "files": [
     {
-      "digest": "c2fd19542d950352bfeb2adc6be3a527b2aede2d089e7c18e895fd1d775f36e9",
+      "digest": "45c70467cc27337964923d6498718d9d88e97ecfa4836c680961e624ac1b2323",
       "path": ".github/workflows/statecraft-ci.yml",
       "role": "workflow"
     },
@@ -123,6 +123,15 @@
       "push": "inapplicable",
       "required": true
     },
+    "all-features": {
+      "declared": "ci.extra_required_jobs",
+      "merge_group": "required",
+      "optional": false,
+      "pull_request": "required",
+      "push": "required",
+      "required": true,
+      "workflow": ".github/workflows/all-features.yml"
+    },
     "code": {
       "merge_group": "required",
       "optional": false,
@@ -157,7 +166,12 @@
     "exclude": [
       ".statecraft/derived"
     ],
-    "extra_required_jobs": [],
+    "extra_required_jobs": [
+      {
+        "job": "all-features",
+        "workflow": ".github/workflows/all-features.yml"
+      }
+    ],
     "gate_each_commit": true,
     "release_branch_pattern": "release/*",
     "require_default_base": true,
