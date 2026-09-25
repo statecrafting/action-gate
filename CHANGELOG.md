@@ -4,6 +4,29 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `action_gate_core::secrets` (spec 001): a pure, regex-free secret detector
+  registry with stable detector ids and byte offsets. Carries aicortex-gate's
+  detectors (24 prefix rules, 7 private-key armour markers including
+  `-----BEGIN PGP PRIVATE KEY BLOCK-----`, URL credential, JWT, Q16
+  fixed-point entropy) plus the `api_key =` assignment rule as
+  `credential-assignment`. Always compiled; needs no feature and no `regex`.
+- `SecretScanCheck`: a blocking check over the registry whose reason names the
+  detector, field and offset, never the value.
+- `DenyByDefault` and `GateBuilder::build_deny_by_default()`: an opt-in,
+  blocking terminal check that closes the gate. The allow-when-no-check-decides
+  default is unchanged.
+- `golden-vectors` feature: `secrets::GOLDEN_VECTORS`, 67 detector vectors
+  (most ported from aicortex's committed corpus) for parity assertions.
+
+### Unchanged
+
+- `SecretsCheck`'s patterns, reason and `config_fingerprint`, so a recorded
+  `Gate::config_hash` over it does not move.
+
 ## [0.1.0] - 2026-07-14
 
 ### Added

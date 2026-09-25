@@ -17,7 +17,7 @@ description = "The action-gate Gate: a pure, deterministic decision engine over 
 keywords = ["policy", "gate", "governance", "decision", "deterministic"]
 categories = ["algorithms", "data-structures"]
 readme = "../../README.md"
-include = ["src/**", "Cargo.toml"]
+include = ["src/**", "testdata/secret-vectors.json", "Cargo.toml"]
 
 [features]
 default = []
@@ -25,6 +25,9 @@ default = []
 # default so the pure core carries no regex dependency unless a consumer wants
 # the common checks.
 checks-common = ["dep:regex"]
+# Exposes `secrets::GOLDEN_VECTORS`, the spec 001 detector vectors as JSON, so
+# a consumer (aicortex spec 047) can assert parity by vector id.
+golden-vectors = []
 
 [dependencies]
 action-gate-types = { workspace = true }
@@ -34,6 +37,9 @@ serde_json = { workspace = true }
 sha2 = { workspace = true }
 hex = { workspace = true }
 regex = { workspace = true, optional = true }
+
+[dev-dependencies]
+proptest = "1"
 
 [lints]
 workspace = true

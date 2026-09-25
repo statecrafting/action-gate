@@ -54,6 +54,25 @@ credential patterns) and `AllowlistCheck` (deny actions not on a list). Domain
 checks (destructive-op, spec-status, grounding, suppression, contact-fatigue,
 tone) are yours to implement and register.
 
+Always available, with no optional feature and no `regex`:
+
+- `secrets`: a pure detector registry (spec 001). `secrets::scan(text, &rules)`
+  returns which detector fired and the byte offset where the value starts,
+  never the value. It covers 24 published token prefixes, 7 private-key armour
+  markers (including the PGP block), URL-embedded credentials, JSON Web Tokens,
+  a fixed-point entropy detector, and `api_key = ...` style assignments.
+  `SecretScanCheck` plugs it into a gate and denies with
+  `gate:deny:secrets:<detector>:<summary|body>:<offset>`. Prefer it over
+  `SecretsCheck` for new gates; `SecretsCheck` is kept unchanged so recorded
+  config hashes stay valid.
+- `DenyByDefault`: an opt-in terminal check. The gate allows when no check
+  decides; `GateBuilder::build_deny_by_default()` closes it instead, so only
+  an explicit `Some(Decision::allow())` from an earlier check lets an action
+  through.
+
+The `golden-vectors` feature exposes `secrets::GOLDEN_VECTORS`, the detector
+test vectors as JSON, so a consumer can assert parity by vector id.
+
 ## Determinism
 
 `Gate::evaluate` is a pure function of `(context, checks)`: no host calls, no
