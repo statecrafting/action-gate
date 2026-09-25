@@ -1,0 +1,76 @@
+{
+  "record": {
+    "authors": [
+      "action-gate"
+    ],
+    "created": "2026-07-14",
+    "establishes": [
+      {
+        "kind": "file",
+        "path": "Cargo.toml"
+      },
+      {
+        "kind": "file",
+        "path": "crates/types/Cargo.toml"
+      },
+      {
+        "kind": "file",
+        "path": "crates/types/src/lib.rs"
+      },
+      {
+        "kind": "file",
+        "path": "crates/core/Cargo.toml"
+      },
+      {
+        "kind": "file",
+        "path": "crates/core/src/lib.rs"
+      },
+      {
+        "kind": "file",
+        "path": "crates/core/src/checks.rs"
+      }
+    ],
+    "id": "000-action-gate-bootstrap",
+    "implementation": "pending",
+    "kind": "tooling",
+    "references": [
+      {
+        "role": "context",
+        "unit": {
+          "kind": "file",
+          "path": "README.md"
+        }
+      },
+      {
+        "role": "context",
+        "unit": {
+          "kind": "file",
+          "path": "NOTICE"
+        }
+      }
+    ],
+    "risk": "low",
+    "sectionDigests": {
+      "000-action-gate-bootstrap": "46568826cd7bbb67a4fc13f3ad1c10d561d2d570668ebb6a3304244e79ea1eba",
+      "1-purpose": "6c54526e9636310cf1f5d9fc2099eb6fa6c007a7dee32868397de3af3fa2c7fa",
+      "2-scope": "4e3b319c89b83b534caa1770015b62e4d45f7d820976780423c5cc4bd9bb4d7d",
+      "3-provenance": "e2c1dba4f1ced47376f93201cf917e20eeeb898e7b6a1c9cadcc186ae36e3e3c",
+      "4-established-units": "8d4169c4e3af9d7d43b55379b0061c91b7f0e42fc7e3f08a140d9852d847cb26",
+      "5-notes-on-the-generalization": "63b89d431ca3cdf83b233647c231bed5cca4ab555e751f584f8e022b5d1a9150"
+    },
+    "sectionHeadings": [
+      "000: action-gate bootstrap",
+      "1. Purpose",
+      "2. Scope",
+      "3. Provenance",
+      "4. Established units",
+      "5. Notes on the generalization"
+    ],
+    "specPath": "specs/000-action-gate-bootstrap/spec.md",
+    "status": "draft",
+    "summary": "Bootstrap spec for the action-gate repository: a two-crate pure, deterministic decision gate that evaluates an ActionContext against an ordered, pluggable Check registry and returns Allow/Deny/Degrade. Extracted (relicensed Apache-2.0 by the sole copyright holder) from the Open Agentic Platform's crates/policy-kernel/lib.rs (the Case-B extraction: OAP's hardcoded six-gate evaluate becomes a Check registry over a domain-neutral context). Depends on canonical-keysort-json for reproducible decision hashing. This spec establishes the workspace skeleton and seeds this repo's own spec corpus, governed by the pinned spec-spine library.\n",
+    "title": "action-gate bootstrap (pure decision gate over a check registry)"
+  },
+  "shardHash": "04dea2fd1b032c5f20039f33a8ac7e6b809e7e684f399d4749feecf8456304b0",
+  "specVersion": "1.8.0"
+}

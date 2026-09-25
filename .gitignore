@@ -15,8 +15,8 @@
 # wall-clock builtAt (the sole non-deterministic artifact) and would churn.
 .derived/**/build-meta.json
 
-# node (spec-spine is pinned as an npx dev tool; no committed node_modules)
-node_modules/
+# Pinned tool installs (`make tools`: spec-spine, statecraft-cli)
+/.tooling/
 
 # OS / editor cruft
 .DS_Store
