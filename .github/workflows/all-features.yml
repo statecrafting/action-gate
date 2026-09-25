@@ -18,6 +18,9 @@ jobs:
   all-features:
     name: clippy + test (all features)
     runs-on: ubuntu-latest
+    # The action pins are the ones the rendered statecraft-ci.yml uses
+    # (actions/checkout v7.0.0, actions/cache v6.1.0), so a bump there and
+    # here is one review. Each SHA is the commit its tag names upstream.
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
