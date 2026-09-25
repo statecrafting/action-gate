@@ -29,8 +29,8 @@ gate:
 	BASE_SHA=$(BASE) HEAD_SHA=HEAD $(GATE) couple
 
 # Not `gate.sh code`: that runs clippy and test with default features only.
-# --all-features keeps parity with ci.yml, so the optional checks-common and
-# golden-vectors code is linted and tested too.
+# --all-features keeps parity with .github/workflows/all-features.yml, so the
+# optional checks-common and golden-vectors code is linted and tested too.
 code:
 	cargo build --workspace --locked
 	cargo test --workspace --all-features --locked

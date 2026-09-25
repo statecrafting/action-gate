@@ -251,13 +251,17 @@ jobs:
           AUTHORITY_CHANGE: ${{ needs.governance.outputs.authority_change }}
         run: echo "owner exception approved for a pull request whose review was ${RESULT} (authority change ${AUTHORITY_CHANGE})"
 
+  all-features:
+    name: all-features
+    uses: ./.github/workflows/all-features.yml
+
   # Revision 7: every job the project declares in ci.extra_required_jobs is a
   # call of its own reusable workflow, needed here and required by the policy
   # exactly as the profile's jobs are: failed, cancelled and skipped all block.
   ci-gate:
     name: ci-gate
     if: always()
-    needs: [governance, code, ai-review, review-exception]
+    needs: [governance, code, ai-review, review-exception, all-features]
     runs-on: ubuntu-latest
     # Read-only: on merge_group the gate reads the recorded review (the
     # entry's pull request, its runs, their jobs and the evidence artifact).
