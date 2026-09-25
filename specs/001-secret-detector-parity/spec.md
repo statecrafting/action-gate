@@ -21,16 +21,16 @@ summary: >
   Golden vectors ported from aicortex's corpus ship with the crate so
   aicortex spec 047 can assert parity by vector id. Semver-minor (0.2.0).
 depends_on:
-  - "000-action-gate-bootstrap"
+  - "000-bootstrap"
 establishes:
   - { kind: file, path: "crates/core/src/secrets.rs" }
   - { kind: file, path: "crates/core/testdata/secret-vectors.json" }
   - { kind: file, path: "crates/core/tests/secret_vectors.rs" }
   - { kind: file, path: "crates/core/tests/secret_properties.rs" }
 extends:
-  - { spec: "000-action-gate-bootstrap", unit: "crates/core/src/lib.rs", nature: additive }
-  - { spec: "000-action-gate-bootstrap", unit: "crates/core/Cargo.toml", nature: additive }
-  - { spec: "000-action-gate-bootstrap", unit: "Cargo.toml", nature: additive }
+  - { spec: "000-bootstrap", unit: "crates/core/src/lib.rs", nature: additive }
+  - { spec: "000-bootstrap", unit: "crates/core/Cargo.toml", nature: additive }
+  - { spec: "000-bootstrap", unit: "Cargo.toml", nature: additive }
 references:
   - { unit: { kind: file, path: "crates/core/src/checks.rs" }, role: constraint }
   - { unit: { kind: file, path: "CHANGELOG.md" }, role: context }

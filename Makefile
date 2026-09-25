@@ -1,7 +1,8 @@
-# Local entry points. CI runs the same commands.
+# Local entry points. CI runs the same gate.
 #
 #   make tools  install the pinned spec-spine into .tooling/ (git-ignored)
-#   make gate   spec-spine governance: freshness, lint, coupling, coverage
+#   make gate   spec-spine governance and coupling, through the rendered
+#               scripts/statecraft/gate.sh that CI runs
 #   make code   build, test, clippy and rustfmt over the workspace
 #
 # The spec-spine version is pinned twice and must agree: SPEC_SPINE_VERSION
@@ -10,6 +11,7 @@
 SPEC_SPINE_VERSION := 0.26.0
 TOOLING            := $(CURDIR)/.tooling
 SPEC_SPINE         := $(TOOLING)/bin/spec-spine
+GATE               := sh scripts/statecraft/gate.sh
 
 # couple compares HEAD against this base; CI passes the PR's base ref.
 BASE ?= origin/main
@@ -19,14 +21,16 @@ BASE ?= origin/main
 tools:
 	cargo install spec-spine-cli --version $(SPEC_SPINE_VERSION) --locked --root $(TOOLING)
 
+# governance: check, lint, index coverage --fail-on-untraced, index check and
+# the authored-content rules, as .statecraft/setup/github-actions-rust.json
+# configures them.
 gate:
-	$(SPEC_SPINE) check --fail-on-warn
-	$(SPEC_SPINE) lint --fail-on-warn
-	$(SPEC_SPINE) couple --base $(BASE) --head HEAD
-	$(SPEC_SPINE) index coverage --fail-on-untraced
+	$(GATE) governance
+	BASE_SHA=$(BASE) HEAD_SHA=HEAD $(GATE) couple
 
-# --all-features on clippy and test keeps parity with ci.yml: the optional
-# checks-common module is linted and tested too.
+# Not `gate.sh code`: that runs clippy and test with default features only.
+# --all-features keeps parity with ci.yml, so the optional checks-common and
+# golden-vectors code is linted and tested too.
 code:
 	cargo build --workspace --locked
 	cargo test --workspace --all-features --locked

@@ -1,5 +1,5 @@
 ---
-id: "000-action-gate-bootstrap"
+id: "000-bootstrap"
 title: "action-gate bootstrap (pure decision gate over a check registry)"
 status: draft
 created: "2026-07-14"
@@ -96,3 +96,15 @@ ordered `GateBuilder` replace the hardcoded gate list; (3) config lives in the
 checks, not a global bundle. OAP re-consumes this by registering its four domain
 checks plus the two common ones, mapping the generic `Decision` back to its
 `PolicyDecision`; OAP's gate tests are the regression guard.
+
+## 6. Owner decisions
+
+- 2026-09-25: this spec's id changed from `000-action-gate-bootstrap` to
+  `000-bootstrap`. The Statecraft CI profile `github-actions-rust`
+  (revision 7) always offers a starter spec at `specs/000-bootstrap/spec.md`
+  and adopts an existing file at that path unchanged. Under any other id the
+  starter shares the numeric prefix `000` with this spec, which spec-spine
+  refuses (V-004). The owner chose the rename over an upstream change. Only
+  the id changes: the status, claims and text of this spec are unchanged,
+  and so are the crates it establishes, apart from the
+  `[package.metadata.action-gate] spec` key in both crate manifests.
