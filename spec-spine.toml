@@ -26,7 +26,7 @@ standalone_rust_workspaces = []
 standalone_npm_packages    = []
 
 [index]
-extra_hashed_inputs = ["standards/**", ".github/workflows/**"]
+extra_hashed_inputs = ["standards/**/*", ".github/workflows/**/*"]
 resolver_exclusions = ["target", "node_modules", ".derived", "dist", "build"]
 
 [branding]
