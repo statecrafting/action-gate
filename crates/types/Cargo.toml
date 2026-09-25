@@ -4,7 +4,8 @@
 
 [package]
 name = "action-gate-types"
-version.workspace = true
+# Pinned: the types did not change in 0.2.0 and are not republished.
+version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true

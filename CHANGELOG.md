@@ -4,7 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-09-24
+
+`action-gate-core` 0.2.0 only; `action-gate-types` stays at 0.1.0 (unchanged,
+not republished), so consumers keep one shared types version. First consumer:
+aicortex spec 047 (shared secret detector convergence), which replaces
+aicortex-gate's own detector table with `action_gate_core::secrets` at an
+exact pin.
 
 ### Added
 
@@ -46,4 +52,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   its `PolicyBundle` config model is not adopted (checks self-configure). See
   `NOTICE`.
 
+[0.2.0]: https://github.com/statecrafting/action-gate/releases/tag/v0.2.0
 [0.1.0]: https://github.com/statecrafting/action-gate/releases/tag/v0.1.0
