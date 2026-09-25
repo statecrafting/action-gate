@@ -45,4 +45,4 @@ proptest = "1"
 workspace = true
 
 [package.metadata.action-gate]
-spec = "000-action-gate-bootstrap"
+spec = "000-bootstrap"

@@ -3,9 +3,9 @@
     "kind": "rust-lib",
     "name": "action-gate-types",
     "path": "crates/types",
-    "specRef": "000-action-gate-bootstrap",
+    "specRef": "000-bootstrap",
     "version": "0.1.0"
   },
   "schemaVersion": "1.1.0",
-  "shardHash": "2bac21ec705f98c1cb30f1f3cde5b0ac3dd75751b909e37fc0089272ae1c00f5"
+  "shardHash": "9804d5c60f96be50e14d07d1e23fca7eb8a8a01772708f767833e66708f9642e"
 }

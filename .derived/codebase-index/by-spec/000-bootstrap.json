@@ -140,9 +140,9 @@
         }
       }
     ],
-    "specId": "000-action-gate-bootstrap",
+    "specId": "000-bootstrap",
     "specStatus": "draft"
   },
   "schemaVersion": "1.1.0",
-  "shardHash": "e7b4279834b805fce7c22767cac46bb14121b0fa9903eb29642675465b9e4691"
+  "shardHash": "599ea521eaf60130885d42889a37e88463ebc8cea481b9371fcbda44b28ce8a1"
 }
