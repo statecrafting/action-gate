@@ -5,7 +5,7 @@ status: approved
 created: "2026-09-24"
 authors: ["action-gate"]
 kind: feature
-implementation: pending
+implementation: complete
 risk: medium
 summary: >
   Converges the family's secret detection upward into action-gate-core.

@@ -48,6 +48,8 @@ use sha2::{Digest, Sha256};
 #[cfg(feature = "checks-common")]
 pub mod checks;
 
+pub mod secrets;
+
 /// A pure decision gate over an ordered list of checks.
 pub struct Gate {
     checks: Vec<Box<dyn Check>>,
@@ -90,6 +92,52 @@ impl Gate {
     }
 }
 
+/// A terminal check that denies whatever reached it (spec 001 B-14).
+///
+/// The gate's published default is to allow when no check returns `Some`.
+/// Registering `DenyByDefault` last closes it instead: an action passes only if
+/// an earlier check returns `Some(Decision::allow())`. Checks registered after
+/// it never run. It is never added implicitly; see also
+/// [`GateBuilder::build_deny_by_default`].
+///
+/// The deny is blocking, so a trust layer downstream cannot reopen a gate its
+/// operator explicitly closed.
+///
+/// ```
+/// use action_gate_core::{ActionContext, Check, Decision, Gate};
+///
+/// struct AllowRead;
+/// impl Check for AllowRead {
+///     fn id(&self) -> &str { "allow-read" }
+///     fn evaluate(&self, ctx: &ActionContext) -> Option<Decision> {
+///         (ctx.action == "read").then(Decision::allow)
+///     }
+/// }
+///
+/// let gate = Gate::builder().check(AllowRead).build_deny_by_default();
+/// assert!(gate.evaluate(&ActionContext::new("read")).is_allow());
+/// assert!(!gate.evaluate(&ActionContext::new("write")).is_allow());
+/// ```
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct DenyByDefault;
+
+impl DenyByDefault {
+    /// The check id, as it appears in a decision's `check_ids`.
+    pub const ID: &'static str = "deny-by-default";
+    /// The reason of every decision this check returns.
+    pub const REASON: &'static str = "gate:deny:default:no_check_decided";
+}
+
+impl Check for DenyByDefault {
+    fn id(&self) -> &str {
+        Self::ID
+    }
+
+    fn evaluate(&self, _ctx: &ActionContext) -> Option<Decision> {
+        Some(Decision::deny(Self::REASON, vec![Self::ID.into()]).blocking())
+    }
+}
+
 /// Builds a [`Gate`] by registering checks in evaluation order.
 #[derive(Default)]
 pub struct GateBuilder {
@@ -121,6 +169,12 @@ impl GateBuilder {
         Gate {
             checks: self.checks,
         }
+    }
+
+    /// Register [`DenyByDefault`] as the terminal check and finish building:
+    /// the gate denies any action no earlier check decides.
+    pub fn build_deny_by_default(self) -> Gate {
+        self.check(DenyByDefault).build()
     }
 }
 
@@ -196,6 +250,32 @@ mod tests {
             .check(deny_on("b", "y"))
             .build();
         assert!(gate.evaluate(&ActionContext::new("z")).is_allow());
+    }
+
+    struct AllowOn(&'static str);
+    impl Check for AllowOn {
+        fn id(&self) -> &str {
+            "allow-on"
+        }
+        fn evaluate(&self, ctx: &ActionContext) -> Option<Decision> {
+            (ctx.action == self.0).then(Decision::allow)
+        }
+    }
+
+    #[test]
+    fn deny_by_default_closes_the_gate() {
+        let gate = Gate::builder()
+            .check(deny_on("a", "x"))
+            .check(AllowOn("read"))
+            .build_deny_by_default();
+        assert!(gate.evaluate(&ActionContext::new("read")).is_allow());
+        let d = gate.evaluate(&ActionContext::new("z"));
+        assert_eq!(d.outcome, Outcome::Deny);
+        assert_eq!(d.reason, DenyByDefault::REASON);
+        assert_eq!(d.check_ids, vec!["deny-by-default"]);
+        assert!(d.blocking);
+        assert_eq!(gate.evaluate(&ActionContext::new("x")).check_ids, vec!["a"]);
+        assert_eq!(gate.check_ids(), vec!["a", "allow-on", "deny-by-default"]);
     }
 
     #[test]
