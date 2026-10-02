@@ -5,6 +5,6 @@
     "path": "crates/core",
     "specRef": "000-bootstrap"
   },
-  "schemaVersion": "1.1.0",
-  "shardHash": "d90b04e5cf02aa8cc2ddaf1f46a4fafa43e443336657c46d8aeb9782633341c3"
+  "schemaVersion": "1.2.0",
+  "shardHash": "ad5d59a43454fa8510f7659b2ba75a21d57b9c75c2ed6f5120b2f7e833ef6b82"
 }

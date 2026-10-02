@@ -74,5 +74,5 @@
     "title": "action-gate bootstrap (pure decision gate over a check registry)"
   },
   "shardHash": "fa16d6c24f9da60919e9937f5da7fc47635fc422eda7a2183da1d64a2e4c8e1d",
-  "specVersion": "1.8.0"
+  "specVersion": "1.9.0"
 }
