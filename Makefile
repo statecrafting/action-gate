@@ -1,16 +1,15 @@
 # Local entry points. CI runs the same gate.
 #
-#   make tools  install the pinned spec-spine into .tooling/ (git-ignored)
+#   make tools  install the pinned spec-spine into .bin/ (git-ignored)
 #   make gate   spec-spine governance and coupling, through the rendered
 #               scripts/statecraft/gate.sh that CI runs
 #   make code   build, test, clippy and rustfmt over the workspace
 #
-# The spec-spine version is pinned twice and must agree: SPEC_SPINE_VERSION
-# here and [meta] required_version in spec-spine.toml.
+# The spec-spine version is declared once in spec-spine.toml.
 
-SPEC_SPINE_VERSION := 0.26.0
-TOOLING            := $(CURDIR)/.tooling
-SPEC_SPINE         := $(TOOLING)/bin/spec-spine
+SPEC_SPINE_VERSION := $(shell sed -n 's/^required_version = "=\(.*\)"/\1/p' spec-spine.toml)
+TOOLING            := $(CURDIR)/.bin
+SPEC_SPINE         := $(TOOLING)/spec-spine
 GATE               := sh scripts/statecraft/gate.sh
 
 # couple compares HEAD against this base; CI passes the PR's base ref.
@@ -19,7 +18,7 @@ BASE ?= origin/main
 .PHONY: tools gate code derived
 
 tools:
-	cargo install spec-spine-cli --version $(SPEC_SPINE_VERSION) --locked --root $(TOOLING)
+	sh scripts/statecraft/install-spec-spine.sh
 
 # governance: check, lint, index coverage --fail-on-untraced, index check and
 # the authored-content rules, as .statecraft/setup/github-actions-rust.json
