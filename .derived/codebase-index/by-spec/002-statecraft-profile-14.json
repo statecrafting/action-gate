@@ -1,0 +1,15 @@
+{
+  "mapping": {
+    "amends": [
+      "001-secret-detector-parity"
+    ],
+    "dependsOn": [
+      "001-secret-detector-parity"
+    ],
+    "implementingPaths": [],
+    "specId": "002-statecraft-profile-14",
+    "specStatus": "approved"
+  },
+  "schemaVersion": "1.2.0",
+  "shardHash": "e3a02b4985148961116eb0c28537b29b9e867e553d250b5ce39cdd757b4318bb"
+}
