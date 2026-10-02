@@ -2,12 +2,12 @@
 #
 # action-gate vends a two-crate pure decision gate; its own specs/ corpus is
 # governed by the spec-spine CLI (crate `spec-spine-cli`), pinned below by
-# [meta] required_version and installed into the git-ignored `.tooling/` by
+# [meta] required_version and installed into the git-ignored `.bin/` by
 # `make tools`. `make gate` runs check, lint, couple and index coverage with
 # that binary; the compiled registry and index are committed under .derived/.
 
 [meta]
-required_version = "=0.26.0"
+required_version = "=0.28.0"
 
 [manifest]
 metadata_namespace = "action-gate"
