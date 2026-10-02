@@ -39,7 +39,7 @@ extra_hashed_inputs = [
   "Cargo.toml",
   "crates/**/*",
 ]
-resolver_exclusions = ["target", ".tooling", ".derived", "dist", "build"]
+resolver_exclusions = ["target", ".tooling", ".bin", ".derived", "dist", "build"]
 
 [branding]
 compiler_id = "spec-spine"

@@ -1,0 +1,62 @@
+{
+  "inputs": {
+    ".github/workflows/all-features.yml": {
+      "contentHash": "2728a2642d6dea8b7713ca9162e59739bcf441b0db29b4bd418af0a11f6c9204"
+    },
+    ".github/workflows/release.yml": {
+      "contentHash": "1b8acbb7f5ddf4ad53c265c9d57b2284e44053a3ffcf8d7e455517a048ae349b"
+    },
+    ".github/workflows/statecraft-ai-review.yml": {
+      "contentHash": "9f00644582115ee46103cd954bbe1575feb83323ff058fcbf12f4a2fc9dca40c"
+    },
+    ".github/workflows/statecraft-ci.yml": {
+      "contentHash": "4b9250e4fd13e84ef02c4db0d210fa849a592dadb0f23a3ae71b4b09a99d9eab"
+    },
+    "Cargo.toml": {
+      "contentHash": "99ede99eeee27248b1bc78dec75dd9c4dfb9bb4c8d29de6fa3c5281d10577e1f"
+    },
+    "crates/core/Cargo.toml": {
+      "contentHash": "12e65bf00d073aabecfd3ed95392f726aa34aa055717e87c9ce8ffe4944ddc86"
+    },
+    "crates/core/src/checks.rs": {
+      "contentHash": "cac025a6b4350ef24a9db0a260c8bfe75e5421205aea74228fca5032f06f865a"
+    },
+    "crates/core/src/lib.rs": {
+      "contentHash": "dfc2635fad7bee0d71f466855f22f334ce1aeaded121e0fe832f785bfbf83ad9"
+    },
+    "crates/core/src/secrets.rs": {
+      "contentHash": "88947b7641ffd96b0f9c469b9a37d7298ac57cb855324100e2ade2f2faa4f5cc"
+    },
+    "crates/core/testdata/secret-vectors.json": {
+      "contentHash": "1835e672ba109ea7896d9525845408691b72f4bb0305e4f07cf812482bc7916d"
+    },
+    "crates/core/tests/secret_properties.rs": {
+      "contentHash": "29a1c22b5b2df4746d9add10b4fe7c33f4f8a17d6ee42c0ae80f525e35b1b088"
+    },
+    "crates/core/tests/secret_vectors.rs": {
+      "contentHash": "19c2cf6cacb22c9f36fc35674fe52f238628f20f5527104f561db34d654a2390"
+    },
+    "crates/types/Cargo.toml": {
+      "contentHash": "b6d8f61d4365109f4aaffaaad6ac70bd775f23e23ec8454a1825fb7bc379d118"
+    },
+    "crates/types/src/lib.rs": {
+      "contentHash": "6f55bd690a4f88f0c5a9687c7aafa943523b294a54f9c1521a722caa4aa8bb52"
+    },
+    "spec-spine.toml": {
+      "contentHash": "4ef8bead917983cb745ed2668aaff29e85fdd939d80b104749a5a18ddf3d065c"
+    },
+    "standards/spec/constitution.md": {
+      "contentHash": "a84dc81e5891d6045edd134b66d336ab45fec254fbdad71e33b54e8997e9309b"
+    },
+    "standards/spec/contract.md": {
+      "contentHash": "ba588fc0a3659e9560a76b25c335ba92efebea44bc2121e2eee5cad8b3dfa83c"
+    },
+    "standards/spec/templates/constitution-template.md": {
+      "contentHash": "9422c45aeea54a1765b9da797f6c7e958dd2e7d4e74a7e3b788f3ec281a97900"
+    },
+    "standards/spec/templates/spec-template.md": {
+      "contentHash": "ff016dd58ed2e6e59fed062a49961c76496b37a7a60d1f321af75b76574eef4f"
+    }
+  },
+  "schemaVersion": "1.2.0"
+}
