@@ -5,7 +5,7 @@
 ## Continuous integration
 
 CI is rendered by Statecraft from the profile `github-actions-rust`
-(revision 13). The managed files are `.github/workflows/statecraft-*.yml`,
+(revision 14). The managed files are `.github/workflows/statecraft-*.yml`,
 `scripts/statecraft/*` and `.statecraft/setup/*`. Change them only by
 editing `project.setup.parameters` in `.statecraft/environment.json` and
 re-rendering (`statecraft-cli init plan .`, then
