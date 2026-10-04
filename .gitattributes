@@ -27,10 +27,10 @@
 *.gz        binary
 
 # --- Derived-artifact merge driver (forward-looking) ---
-# When this repo's spec-spine self-governance lands (committed .derived/ shards
-# plus .githooks/, deferred to a later session), two branches that both
-# regenerated the per-spec / per-package JSON shards would conflict textually.
-# The `action-gate-derived-regen` driver regenerates them from the merged tree
-# instead of leaving conflict markers. Opt-in per-clone. build-meta.json is
-# gitignored, so the glob never touches it.
-.derived/**/*.json merge=action-gate-derived-regen
+# The committed .statecraft/derived/ shards are regenerated, never merged by
+# hand: two branches that both regenerated the per-spec / per-package JSON
+# shards would conflict textually. The `action-gate-derived-regen` driver
+# regenerates them from the merged tree instead of leaving conflict markers.
+# Opt-in per-clone (no clone defines it yet). build-meta.json is gitignored,
+# so the glob never touches it.
+.statecraft/derived/**/*.json merge=action-gate-derived-regen

@@ -4,7 +4,8 @@
 # governed by the spec-spine CLI (crate `spec-spine-cli`), pinned below by
 # [meta] required_version and installed into the git-ignored `.bin/` by
 # `make tools`. `make gate` runs check, lint, couple and index coverage with
-# that binary; the compiled registry and index are committed under .derived/.
+# that binary; the compiled registry and index are committed under
+# .statecraft/derived/ (spec 003).
 
 [meta]
 required_version = "=0.28.0"
@@ -20,7 +21,7 @@ allowed = []        # disabled: `kind` is free-text (symmetric with [domains])
 
 [layout]
 specs_dir     = "specs"
-derived_dir   = ".derived"
+derived_dir   = ".statecraft/derived"
 standards_dir = "standards/spec"
 schemas_dir   = "standards/schemas"
 cargo_workspace = "Cargo.toml"
@@ -31,15 +32,15 @@ standalone_npm_packages    = []
 [index]
 # The claimed workspace manifest and crate trees are hashed whole (L-008): a
 # change to any of them restamps every shard, so `make gate` fails until
-# .derived/ is regenerated. With two specs over six source files that is
-# cheaper and simpler than per-symbol claims.
+# .statecraft/derived/ is regenerated. With three specs over six source files
+# that is cheaper and simpler than per-symbol claims.
 extra_hashed_inputs = [
   "standards/**/*",
   ".github/workflows/**/*",
   "Cargo.toml",
   "crates/**/*",
 ]
-resolver_exclusions = ["target", ".tooling", ".bin", ".derived", "dist", "build"]
+resolver_exclusions = ["target", ".tooling", ".bin", ".statecraft/derived", "dist", "build"]
 
 [branding]
 compiler_id = "spec-spine"
