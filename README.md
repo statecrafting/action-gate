@@ -30,7 +30,8 @@ assert!(decision.is_allow());
   owns its own parameters (a secrets check owns its regexes, an allowlist owns
   its list): there is no global policy-bundle type.
 - **`Gate`**: runs checks in registration order, returning the first
-  `Some(decision)` or an unconditional allow. `Gate::config_hash()` is a stable
+  `Some(decision)` or an unconditional allow (the default open mode; see
+  closed mode below). `Gate::config_hash()` is a stable
   hash of the ordered check set plus each check's parameters, so a recorded
   decision can be bound to the exact gate that produced it.
 - **`Decision`**: `outcome`, a stable `reason` code, `check_ids`, and a
@@ -69,6 +70,15 @@ Always available, with no optional feature and no `regex`:
   decides; `GateBuilder::build_deny_by_default()` closes it instead, so only
   an explicit `Some(Decision::allow())` from an earlier check lets an action
   through.
+- Closed mode (spec 004): `GateBuilder::closed()` and
+  `GateBuilder::require(id)` / `require_all(ids)` build a gate that denies
+  when no check decides, denies when a required check is unregistered or
+  returns `None`, and does not stop at an allow or a degrade, so a later deny
+  still wins. The gate's own reasons are the stable codes in
+  `action_gate_core::closed`. `Gate::evaluate_exhaustive` also returns every
+  deny in registration order, for consumers that report all reasons. The mode
+  is part of `Gate::config_hash()`, so a closed gate never hashes like an open
+  one; open gates hash exactly as in 0.2.0.
 
 The `golden-vectors` feature exposes `secrets::GOLDEN_VECTORS`, the detector
 test vectors as JSON, so a consumer can assert parity by vector id.

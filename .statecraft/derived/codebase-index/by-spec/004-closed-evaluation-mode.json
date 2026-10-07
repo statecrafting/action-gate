@@ -1,20 +1,12 @@
 {
   "mapping": {
+    "dependsOn": [
+      "000-bootstrap",
+      "001-secret-detector-parity"
+    ],
     "implementingPaths": [
       {
         "path": "Cargo.toml",
-        "source": "spec-edge"
-      },
-      {
-        "path": "crates/core",
-        "source": "manifest-metadata"
-      },
-      {
-        "path": "crates/core/Cargo.toml",
-        "source": "spec-edge"
-      },
-      {
-        "path": "crates/core/src/checks.rs",
         "source": "spec-edge"
       },
       {
@@ -22,15 +14,15 @@
         "source": "spec-edge"
       },
       {
-        "path": "crates/types",
-        "source": "manifest-metadata"
-      },
-      {
-        "path": "crates/types/Cargo.toml",
+        "path": "crates/core/testdata/closed-mode-vectors.json",
         "source": "spec-edge"
       },
       {
-        "path": "crates/types/src/lib.rs",
+        "path": "crates/core/tests/closed_mode.rs",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/tests/open_mode_compat.rs",
         "source": "spec-edge"
       }
     ],
@@ -38,40 +30,53 @@
       {
         "locations": [
           {
+            "file": "crates/core/testdata/closed-mode-vectors.json"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/testdata/closed-mode-vectors.json"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/tests/closed_mode.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/tests/closed_mode.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/tests/open_mode_compat.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/tests/open_mode_compat.rs"
+        }
+      },
+      {
+        "locations": [
+          {
             "file": "Cargo.toml"
           }
         ],
         "ownership": true,
-        "sourceField": "establishes",
+        "sourceField": "extends",
         "unit": {
           "kind": "file",
           "path": "Cargo.toml"
-        }
-      },
-      {
-        "locations": [
-          {
-            "file": "crates/core/Cargo.toml"
-          }
-        ],
-        "ownership": true,
-        "sourceField": "establishes",
-        "unit": {
-          "kind": "file",
-          "path": "crates/core/Cargo.toml"
-        }
-      },
-      {
-        "locations": [
-          {
-            "file": "crates/core/src/checks.rs"
-          }
-        ],
-        "ownership": true,
-        "sourceField": "establishes",
-        "unit": {
-          "kind": "file",
-          "path": "crates/core/src/checks.rs"
         }
       },
       {
@@ -81,7 +86,7 @@
           }
         ],
         "ownership": true,
-        "sourceField": "establishes",
+        "sourceField": "extends",
         "unit": {
           "kind": "file",
           "path": "crates/core/src/lib.rs"
@@ -90,40 +95,14 @@
       {
         "locations": [
           {
-            "file": "crates/types/Cargo.toml"
-          }
-        ],
-        "ownership": true,
-        "sourceField": "establishes",
-        "unit": {
-          "kind": "file",
-          "path": "crates/types/Cargo.toml"
-        }
-      },
-      {
-        "locations": [
-          {
-            "file": "crates/types/src/lib.rs"
-          }
-        ],
-        "ownership": true,
-        "sourceField": "establishes",
-        "unit": {
-          "kind": "file",
-          "path": "crates/types/src/lib.rs"
-        }
-      },
-      {
-        "locations": [
-          {
-            "file": "NOTICE"
+            "file": "CHANGELOG.md"
           }
         ],
         "ownership": false,
         "sourceField": "references",
         "unit": {
           "kind": "file",
-          "path": "NOTICE"
+          "path": "CHANGELOG.md"
         }
       },
       {
@@ -140,9 +119,9 @@
         }
       }
     ],
-    "specId": "000-bootstrap",
+    "specId": "004-closed-evaluation-mode",
     "specStatus": "approved"
   },
   "schemaVersion": "1.2.0",
-  "shardHash": "686e25a57b145617bb39df26b8ad3ed05e755d6f0ce3950ed5f4023b9f02bf84"
+  "shardHash": "3938806b49d6085a18bb7afcac8f40a5459c47cbd27d6fb0a95e75b8b47d5466"
 }

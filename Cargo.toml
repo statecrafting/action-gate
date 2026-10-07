@@ -24,7 +24,7 @@ resolver = "2"
 members = ["crates/types", "crates/core"]
 
 [workspace.package]
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.85"
 license = "Apache-2.0"
@@ -34,7 +34,7 @@ authors = ["The action-gate Authors"]
 
 [workspace.dependencies]
 # Unchanged since 0.1.0 and kept there, so a consumer can move to
-# action-gate-core 0.2 without re-typing its checks (types 0.1 stays shared).
+# action-gate-core 0.2 or 0.3 without re-typing its checks (types 0.1 stays shared).
 action-gate-types = { version = "0.1.0", path = "crates/types" }
 canonical-keysort-json = "0.1"
 serde = { version = "1", features = ["derive"] }

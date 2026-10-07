@@ -1,7 +1,7 @@
 ---
 id: "000-bootstrap"
 title: "action-gate bootstrap (pure decision gate over a check registry)"
-status: draft
+status: approved
 created: "2026-07-14"
 authors: ["action-gate"]
 kind: tooling

@@ -1,0 +1,619 @@
+{
+  "spec": "004-closed-evaluation-mode",
+  "description": "Golden vectors for the closed evaluation mode. Each check is scripted: for an action in its answers it returns allow (Decision::allow()), deny (reason test:deny:<id>, check_ids [<id>], not blocking) or degrade (reason test:degrade:<id>); otherwise None. A scripted check's config fingerprint is its id. decision is what Gate::evaluate returns; denials is Evaluation::denials from Gate::evaluate_exhaustive.",
+  "vectors": [
+    {
+      "id": "closed-001",
+      "title": "A closed gate with no checks denies everything.",
+      "mode": "closed",
+      "required": [],
+      "checks": [],
+      "config_hash": "sha256:db54c65ad812e96d6673de9256ccdf9bca96d3bd22ba128f9564b5c587ac8384",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "gate:deny:closed:no_check_decided",
+            "check_ids": [],
+            "blocking": true
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "gate:deny:closed:no_check_decided",
+              "check_ids": [],
+              "blocking": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-002",
+      "title": "Open mode over two checks: first Some wins, silence allows.",
+      "mode": "open",
+      "required": [],
+      "checks": [
+        {
+          "id": "a",
+          "answers": {
+            "x": "deny"
+          }
+        },
+        {
+          "id": "b",
+          "answers": {
+            "r": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:0473ef2dc0d324ab659d3580c1134e9d812035905c4781fdd6d529b0c6860e13",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:a",
+            "check_ids": [
+              "a"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:a",
+              "check_ids": [
+                "a"
+              ],
+              "blocking": false
+            }
+          ]
+        },
+        {
+          "action": "r",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:no_check_triggered",
+            "check_ids": [],
+            "blocking": false
+          },
+          "denials": []
+        },
+        {
+          "action": "z",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:no_check_triggered",
+            "check_ids": [],
+            "blocking": false
+          },
+          "denials": []
+        }
+      ]
+    },
+    {
+      "id": "closed-003",
+      "title": "The same two checks closed: silence denies and lists the checks that ran.",
+      "mode": "closed",
+      "required": [],
+      "checks": [
+        {
+          "id": "a",
+          "answers": {
+            "x": "deny"
+          }
+        },
+        {
+          "id": "b",
+          "answers": {
+            "r": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:796610d8992a4924e3135dd04df90c5388f818371152b68b70d078166eafa4d0",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:a",
+            "check_ids": [
+              "a"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:a",
+              "check_ids": [
+                "a"
+              ],
+              "blocking": false
+            }
+          ]
+        },
+        {
+          "action": "r",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:closed:affirmed",
+            "check_ids": [
+              "b"
+            ],
+            "blocking": false
+          },
+          "denials": []
+        },
+        {
+          "action": "z",
+          "decision": {
+            "outcome": "deny",
+            "reason": "gate:deny:closed:no_check_decided",
+            "check_ids": [
+              "a",
+              "b"
+            ],
+            "blocking": true
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "gate:deny:closed:no_check_decided",
+              "check_ids": [
+                "a",
+                "b"
+              ],
+              "blocking": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-004",
+      "title": "Required ids that name no registered check deny before any check runs, sorted.",
+      "mode": "closed",
+      "required": [
+        "zeta",
+        "beta"
+      ],
+      "checks": [
+        {
+          "id": "a",
+          "answers": {
+            "r": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:04b36dedea2ff976951e455c6e7727a1fdd796ebdeb623d5fab94f83e9162d05",
+      "cases": [
+        {
+          "action": "r",
+          "decision": {
+            "outcome": "deny",
+            "reason": "gate:deny:closed:required_unregistered",
+            "check_ids": [
+              "beta",
+              "zeta"
+            ],
+            "blocking": true
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "gate:deny:closed:required_unregistered",
+              "check_ids": [
+                "beta",
+                "zeta"
+              ],
+              "blocking": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-005",
+      "title": "A required check that abstains denies at its position; exhaustive lists later denials.",
+      "mode": "closed",
+      "required": [
+        "scan"
+      ],
+      "checks": [
+        {
+          "id": "scan",
+          "answers": {
+            "r": "allow"
+          }
+        },
+        {
+          "id": "b",
+          "answers": {
+            "q": "deny"
+          }
+        }
+      ],
+      "config_hash": "sha256:1871fb5307780b7596d7adb27a87900f10c954b8d93967b7e80cf73392983f14",
+      "cases": [
+        {
+          "action": "q",
+          "decision": {
+            "outcome": "deny",
+            "reason": "gate:deny:closed:required_undecided",
+            "check_ids": [
+              "scan"
+            ],
+            "blocking": true
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "gate:deny:closed:required_undecided",
+              "check_ids": [
+                "scan"
+              ],
+              "blocking": true
+            },
+            {
+              "outcome": "deny",
+              "reason": "test:deny:b",
+              "check_ids": [
+                "b"
+              ],
+              "blocking": false
+            }
+          ]
+        },
+        {
+          "action": "r",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:closed:affirmed",
+            "check_ids": [
+              "scan"
+            ],
+            "blocking": false
+          },
+          "denials": []
+        }
+      ]
+    },
+    {
+      "id": "closed-006",
+      "title": "Open mode contrast to closed-007: an allow ends an open evaluation, so a later deny never decides.",
+      "mode": "open",
+      "required": [],
+      "checks": [
+        {
+          "id": "a",
+          "answers": {
+            "x": "allow"
+          }
+        },
+        {
+          "id": "b",
+          "answers": {
+            "x": "deny"
+          }
+        }
+      ],
+      "config_hash": "sha256:0473ef2dc0d324ab659d3580c1134e9d812035905c4781fdd6d529b0c6860e13",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:no_check_triggered",
+            "check_ids": [],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:b",
+              "check_ids": [
+                "b"
+              ],
+              "blocking": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-007",
+      "title": "An allow does not end a closed evaluation: a later deny wins.",
+      "mode": "closed",
+      "required": [],
+      "checks": [
+        {
+          "id": "a",
+          "answers": {
+            "x": "allow"
+          }
+        },
+        {
+          "id": "b",
+          "answers": {
+            "x": "deny"
+          }
+        }
+      ],
+      "config_hash": "sha256:796610d8992a4924e3135dd04df90c5388f818371152b68b70d078166eafa4d0",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:b",
+            "check_ids": [
+              "b"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:b",
+              "check_ids": [
+                "b"
+              ],
+              "blocking": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-008",
+      "title": "A degrade is held, not returned early: a later deny wins, and a degrade beats an allow.",
+      "mode": "closed",
+      "required": [
+        "origin",
+        "secrets"
+      ],
+      "checks": [
+        {
+          "id": "origin",
+          "answers": {
+            "x": "degrade",
+            "y": "degrade",
+            "w": "degrade",
+            "a": "allow"
+          }
+        },
+        {
+          "id": "secrets",
+          "answers": {
+            "x": "allow",
+            "y": "deny",
+            "w": "allow",
+            "a": "allow"
+          }
+        },
+        {
+          "id": "late",
+          "answers": {
+            "w": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:a5c7694e2741657f3b6b6a21b1348643dcda6e9e366b2ae29f7f574c9e93d1cd",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "degrade",
+            "reason": "test:degrade:origin",
+            "check_ids": [
+              "origin"
+            ],
+            "blocking": false
+          },
+          "denials": []
+        },
+        {
+          "action": "y",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:secrets",
+            "check_ids": [
+              "secrets"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:secrets",
+              "check_ids": [
+                "secrets"
+              ],
+              "blocking": false
+            }
+          ]
+        },
+        {
+          "action": "w",
+          "decision": {
+            "outcome": "degrade",
+            "reason": "test:degrade:origin",
+            "check_ids": [
+              "origin"
+            ],
+            "blocking": false
+          },
+          "denials": []
+        },
+        {
+          "action": "a",
+          "decision": {
+            "outcome": "allow",
+            "reason": "gate:allow:closed:affirmed",
+            "check_ids": [
+              "origin",
+              "secrets"
+            ],
+            "blocking": false
+          },
+          "denials": []
+        }
+      ]
+    },
+    {
+      "id": "closed-009",
+      "title": "Exhaustive evaluation collects every deny in registration order.",
+      "mode": "closed",
+      "required": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "checks": [
+        {
+          "id": "r1",
+          "answers": {
+            "x": "deny",
+            "y": "allow"
+          }
+        },
+        {
+          "id": "r2",
+          "answers": {
+            "x": "deny",
+            "y": "deny"
+          }
+        },
+        {
+          "id": "r3",
+          "answers": {
+            "x": "allow",
+            "y": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:30f229f110b32f9f1006447a015bad679e1ec3cfa4b8c25df7b64a3458430c2d",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:r1",
+            "check_ids": [
+              "r1"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:r1",
+              "check_ids": [
+                "r1"
+              ],
+              "blocking": false
+            },
+            {
+              "outcome": "deny",
+              "reason": "test:deny:r2",
+              "check_ids": [
+                "r2"
+              ],
+              "blocking": false
+            }
+          ]
+        },
+        {
+          "action": "y",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:r2",
+            "check_ids": [
+              "r2"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:r2",
+              "check_ids": [
+                "r2"
+              ],
+              "blocking": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closed-010",
+      "title": "Requirements are a set: the same ids in another order hash the same as closed-009.",
+      "mode": "closed",
+      "required": [
+        "r3",
+        "r1",
+        "r2",
+        "r1"
+      ],
+      "checks": [
+        {
+          "id": "r1",
+          "answers": {
+            "x": "deny",
+            "y": "allow"
+          }
+        },
+        {
+          "id": "r2",
+          "answers": {
+            "x": "deny",
+            "y": "deny"
+          }
+        },
+        {
+          "id": "r3",
+          "answers": {
+            "x": "allow",
+            "y": "allow"
+          }
+        }
+      ],
+      "config_hash": "sha256:30f229f110b32f9f1006447a015bad679e1ec3cfa4b8c25df7b64a3458430c2d",
+      "cases": [
+        {
+          "action": "x",
+          "decision": {
+            "outcome": "deny",
+            "reason": "test:deny:r1",
+            "check_ids": [
+              "r1"
+            ],
+            "blocking": false
+          },
+          "denials": [
+            {
+              "outcome": "deny",
+              "reason": "test:deny:r1",
+              "check_ids": [
+                "r1"
+              ],
+              "blocking": false
+            },
+            {
+              "outcome": "deny",
+              "reason": "test:deny:r2",
+              "check_ids": [
+                "r2"
+              ],
+              "blocking": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

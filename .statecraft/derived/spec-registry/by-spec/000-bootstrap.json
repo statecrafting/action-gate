@@ -69,10 +69,10 @@
       "6. Owner decisions"
     ],
     "specPath": "specs/000-bootstrap/spec.md",
-    "status": "draft",
+    "status": "approved",
     "summary": "Bootstrap spec for the action-gate repository: a two-crate pure, deterministic decision gate that evaluates an ActionContext against an ordered, pluggable Check registry and returns Allow/Deny/Degrade. Extracted (relicensed Apache-2.0 by the sole copyright holder) from the Open Agentic Platform's crates/policy-kernel/lib.rs (the Case-B extraction: OAP's hardcoded six-gate evaluate becomes a Check registry over a domain-neutral context). Depends on canonical-keysort-json for reproducible decision hashing. This spec establishes the workspace skeleton and seeds this repo's own spec corpus, governed by the pinned spec-spine library.\n",
     "title": "action-gate bootstrap (pure decision gate over a check registry)"
   },
-  "shardHash": "fa16d6c24f9da60919e9937f5da7fc47635fc422eda7a2183da1d64a2e4c8e1d",
+  "shardHash": "686e25a57b145617bb39df26b8ad3ed05e755d6f0ce3950ed5f4023b9f02bf84",
   "specVersion": "1.9.0"
 }
