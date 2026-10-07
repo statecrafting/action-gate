@@ -37,7 +37,7 @@
       "contentHash": "4146106fe09224fe01b5db268031ffe938bc200b6132e1d97d47285d38d261ea"
     },
     "crates/core/tests/open_mode_compat.rs": {
-      "contentHash": "cc908f226be956fa16ace9c33eef14bd3938b0dc2d02365e8068d42664fdd10b"
+      "contentHash": "f6877832670fd7879103c91b26c2b045158b4b08af711d607d34039b2e19eba7"
     },
     "crates/core/tests/secret_properties.rs": {
       "contentHash": "29a1c22b5b2df4746d9add10b4fe7c33f4f8a17d6ee42c0ae80f525e35b1b088"

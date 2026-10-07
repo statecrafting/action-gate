@@ -39,7 +39,7 @@ impl Check for AllowOn {
 }
 
 fn gates() -> Vec<(&'static str, Gate)> {
-    let mut gates = vec![
+    let gates = vec![
         ("empty", Gate::builder().build()),
         (
             "two-denies",
@@ -82,18 +82,25 @@ fn gates() -> Vec<(&'static str, Gate)> {
             Gate::builder().check(SecretScanCheck::default()).build(),
         ),
     ];
-    #[cfg(feature = "checks-common")]
-    {
-        use action_gate_core::checks::{AllowlistCheck, SecretsCheck};
-        gates.push((
-            "checks-common",
-            Gate::builder()
-                .check(SecretsCheck::default())
-                .check(AllowlistCheck::new(["email.send", "email.draft"]))
-                .build(),
-        ));
-    }
-    gates
+    gates.into_iter().chain(common_gates()).collect()
+}
+
+/// The `checks-common` configuration, when that feature is on.
+#[cfg(feature = "checks-common")]
+fn common_gates() -> Vec<(&'static str, Gate)> {
+    use action_gate_core::checks::{AllowlistCheck, SecretsCheck};
+    vec![(
+        "checks-common",
+        Gate::builder()
+            .check(SecretsCheck::default())
+            .check(AllowlistCheck::new(["email.send", "email.draft"]))
+            .build(),
+    )]
+}
+
+#[cfg(not(feature = "checks-common"))]
+fn common_gates() -> Vec<(&'static str, Gate)> {
+    Vec::new()
 }
 
 /// `config_hash` of each gate above, as 0.2.0 computed it.
