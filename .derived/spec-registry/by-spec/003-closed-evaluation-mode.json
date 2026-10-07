@@ -1,0 +1,106 @@
+{
+  "record": {
+    "authors": [
+      "action-gate"
+    ],
+    "created": "2026-10-07",
+    "dependsOn": [
+      "000-bootstrap",
+      "001-secret-detector-parity"
+    ],
+    "establishes": [
+      {
+        "kind": "file",
+        "path": "crates/core/tests/closed_mode.rs"
+      },
+      {
+        "kind": "file",
+        "path": "crates/core/tests/open_mode_compat.rs"
+      },
+      {
+        "kind": "file",
+        "path": "crates/core/testdata/closed-mode-vectors.json"
+      }
+    ],
+    "extends": [
+      {
+        "nature": "additive",
+        "spec": "000-bootstrap",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/src/lib.rs"
+        }
+      },
+      {
+        "nature": "additive",
+        "spec": "000-bootstrap",
+        "unit": {
+          "kind": "file",
+          "path": "Cargo.toml"
+        }
+      }
+    ],
+    "id": "003-closed-evaluation-mode",
+    "implementation": "in-progress",
+    "kind": "feature",
+    "references": [
+      {
+        "role": "context",
+        "unit": {
+          "kind": "file",
+          "path": "CHANGELOG.md"
+        }
+      },
+      {
+        "role": "context",
+        "unit": {
+          "kind": "file",
+          "path": "README.md"
+        }
+      }
+    ],
+    "risk": "medium",
+    "sectionDigests": {
+      "003-closed-evaluation-mode": "13df46391a1adebbfcd602f2f2b219f36622311cb665dad27a5ec13aa71eddb0",
+      "1-purpose": "5953644a58517dda1aea87230ffa97365a83cca52b60feda61f2fdaab234280e",
+      "2-scope": "fb5e195108f07e193b6b64dc32ef114a74d749852b0081f73285140bd37812a4",
+      "3-1-modes": "8fcb7f5a01920ae7481be381f4f6c45f53d5fc255eac9aaece59d538ad529df6",
+      "3-2-closed-evaluation": "e7f15201f2366d69be1c47f2d7e4e71d97eda6799a5ad920a2dccef7eecee765",
+      "3-3-exhaustive-evaluation": "1c242c7a86733fb7fd8c430aa84e979d699f7f8ef7767b2cf8ac8fcd630711c4",
+      "3-4-config-hash": "af1fa97bf21cd97fe997194ebe31550c4692d92efb08f1eac18adfbb42ca720e",
+      "3-5-compatibility": "e4d618c717dff51484bd9aa4004cae27a1effb5c3788b640362058d422076c64",
+      "3-behavior": "2760fbbcc07f7a81d74df0ba4423e4483cba137e6e4f9c1246370f68900e232e",
+      "4-functional-requirements": "223a72c9590c99003053257860989a0c1f2582cfc40d0dd72df2e489a9396a17",
+      "5-acceptance-criteria": "51bf50072e34fc5fd4cfff2120cb3d27ea4bed8a4e70f3b78243f7bce8582039",
+      "6-1-statecraft-envelope-admission": "c653e20243b31da94c097d4bd728c917417afdd102e56b6e90dd11b64b07317d",
+      "6-2-aicortex-gate": "be04aec999ad100f8a1fdf3419eeda44d5b37a42c3e9afeac90aec818a18d57a",
+      "6-consumer-adapters": "06e931c6d0efeaaf410e7f7b663d371735b53cee19f7584742bece9f20c904e2",
+      "7-resolved-decisions": "df43bee956cb445850b87ee5b8f395efd2cf9920d9fcc25d8ee5ef3617fcd465",
+      "verification": "e3a6de7a9e6c88ced55e21a48c4c4293f17f1c9376770892c7dad7cd973a6ee2"
+    },
+    "sectionHeadings": [
+      "003: Closed evaluation mode",
+      "1. Purpose",
+      "2. Scope",
+      "3. Behavior",
+      "3.1 Modes",
+      "3.2 Closed evaluation",
+      "3.3 Exhaustive evaluation",
+      "3.4 Config hash",
+      "3.5 Compatibility",
+      "4. Functional requirements",
+      "5. Acceptance criteria",
+      "6. Consumer adapters",
+      "6.1 statecraft-envelope admission",
+      "6.2 aicortex-gate",
+      "7. Resolved decisions",
+      "Verification"
+    ],
+    "specPath": "specs/003-closed-evaluation-mode/spec.md",
+    "status": "draft",
+    "summary": "Adds a second, opt-in evaluation mode to the Gate. A closed gate denies when no check decides, denies when a required check id names no registered check or a required check abstains, and does not stop at an allow or a degrade, so a later deny still decides. The gate's own denies carry stable reason codes and are blocking. An exhaustive evaluation returns every deny in registration order for consumers that report all of their reasons. The mode is part of the config hash, so a closed gate never hashes like an open one, while every open gate keeps its 0.2.0 hash and decision bytes. Written so statecraft-envelope's admission evaluator (statecraft-cli spec 007, the hosted platform's specs 003 and 004) and aicortex-gate (aicortex specs 013 and 051) can replace their hand-written evaluators with action-gate. Semver-minor (0.3.0).\n",
+    "title": "Closed evaluation mode: deny by default, required checks, and every deny in order"
+  },
+  "shardHash": "6826673b70f5b1256db47c213ecc1ceab9b048de02113007499566b879d62991",
+  "specVersion": "1.9.0"
+}

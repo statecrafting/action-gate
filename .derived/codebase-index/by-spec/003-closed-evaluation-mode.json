@@ -1,0 +1,127 @@
+{
+  "mapping": {
+    "dependsOn": [
+      "000-bootstrap",
+      "001-secret-detector-parity"
+    ],
+    "implementingPaths": [
+      {
+        "path": "Cargo.toml",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/src/lib.rs",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/testdata/closed-mode-vectors.json",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/tests/closed_mode.rs",
+        "source": "spec-edge"
+      },
+      {
+        "path": "crates/core/tests/open_mode_compat.rs",
+        "source": "spec-edge"
+      }
+    ],
+    "resolvedUnits": [
+      {
+        "locations": [
+          {
+            "file": "crates/core/testdata/closed-mode-vectors.json"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/testdata/closed-mode-vectors.json"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/tests/closed_mode.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/tests/closed_mode.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/tests/open_mode_compat.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "establishes",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/tests/open_mode_compat.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "Cargo.toml"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "extends",
+        "unit": {
+          "kind": "file",
+          "path": "Cargo.toml"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "crates/core/src/lib.rs"
+          }
+        ],
+        "ownership": true,
+        "sourceField": "extends",
+        "unit": {
+          "kind": "file",
+          "path": "crates/core/src/lib.rs"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "CHANGELOG.md"
+          }
+        ],
+        "ownership": false,
+        "sourceField": "references",
+        "unit": {
+          "kind": "file",
+          "path": "CHANGELOG.md"
+        }
+      },
+      {
+        "locations": [
+          {
+            "file": "README.md"
+          }
+        ],
+        "ownership": false,
+        "sourceField": "references",
+        "unit": {
+          "kind": "file",
+          "path": "README.md"
+        }
+      }
+    ],
+    "specId": "003-closed-evaluation-mode",
+    "specStatus": "draft"
+  },
+  "schemaVersion": "1.2.0",
+  "shardHash": "6826673b70f5b1256db47c213ecc1ceab9b048de02113007499566b879d62991"
+}

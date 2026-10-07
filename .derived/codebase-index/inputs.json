@@ -13,7 +13,7 @@
       "contentHash": "7aadad69fa5998f0cd276f478efa9d20b39a657d9ac0c933fa2d371e203c0e66"
     },
     "Cargo.toml": {
-      "contentHash": "99ede99eeee27248b1bc78dec75dd9c4dfb9bb4c8d29de6fa3c5281d10577e1f"
+      "contentHash": "fe16074bf503e53b8af2727371f7b2c4f731431d36d342f2a3b26929089842f2"
     },
     "crates/core/Cargo.toml": {
       "contentHash": "12e65bf00d073aabecfd3ed95392f726aa34aa055717e87c9ce8ffe4944ddc86"
@@ -22,13 +22,22 @@
       "contentHash": "cac025a6b4350ef24a9db0a260c8bfe75e5421205aea74228fca5032f06f865a"
     },
     "crates/core/src/lib.rs": {
-      "contentHash": "dfc2635fad7bee0d71f466855f22f334ce1aeaded121e0fe832f785bfbf83ad9"
+      "contentHash": "e67a73e2811ec43db04557985c7276b2dedbc0dc9ae0849837619cb72d50debb"
     },
     "crates/core/src/secrets.rs": {
       "contentHash": "88947b7641ffd96b0f9c469b9a37d7298ac57cb855324100e2ade2f2faa4f5cc"
     },
+    "crates/core/testdata/closed-mode-vectors.json": {
+      "contentHash": "a509027d71e1b2bb642863e2b1f4cbb4c8924a2a9018cb8113798f29b79d67f7"
+    },
     "crates/core/testdata/secret-vectors.json": {
       "contentHash": "1835e672ba109ea7896d9525845408691b72f4bb0305e4f07cf812482bc7916d"
+    },
+    "crates/core/tests/closed_mode.rs": {
+      "contentHash": "4146106fe09224fe01b5db268031ffe938bc200b6132e1d97d47285d38d261ea"
+    },
+    "crates/core/tests/open_mode_compat.rs": {
+      "contentHash": "cc908f226be956fa16ace9c33eef14bd3938b0dc2d02365e8068d42664fdd10b"
     },
     "crates/core/tests/secret_properties.rs": {
       "contentHash": "29a1c22b5b2df4746d9add10b4fe7c33f4f8a17d6ee42c0ae80f525e35b1b088"

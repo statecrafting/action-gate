@@ -14,6 +14,12 @@
 //! Determinism depends on check ordering being stable, which the builder
 //! guarantees (insertion order).
 //!
+//! That is the default, [`Mode::Open`]. A gate built with
+//! [`GateBuilder::closed`] or [`GateBuilder::require`] evaluates in
+//! [`Mode::Closed`] instead: it denies when no check decides, and every
+//! required check must be registered and must decide. See [`Mode`] and the
+//! [`closed`] module for the rules and reason codes.
+//!
 //! # Config is in the checks, not a global bundle
 //!
 //! There is no global policy-bundle type here. Each check owns its parameters
@@ -43,6 +49,8 @@
 
 pub use action_gate_types::{ActionContext, Check, Decision, Outcome};
 
+use std::collections::BTreeSet;
+
 use sha2::{Digest, Sha256};
 
 #[cfg(feature = "checks-common")]
@@ -50,9 +58,77 @@ pub mod checks;
 
 pub mod secrets;
 
+/// How a [`Gate`] combines its checks' answers (spec 003).
+///
+/// The mode is part of [`Gate::config_hash`]: a closed gate never hashes the
+/// same as an open one, whatever its checks.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum Mode {
+    /// The 0.1.0 and 0.2.0 behaviour, and the default. Checks run in
+    /// registration order; the first `Some` wins, whatever its outcome; when
+    /// no check returns `Some`, the gate allows with
+    /// `gate:allow:no_check_triggered`.
+    #[default]
+    Open,
+    /// Deny by default, with required checks. Before any check runs, every
+    /// required id must name a registered check, or the gate denies with
+    /// [`closed::REQUIRED_UNREGISTERED`]. Checks then run in registration
+    /// order:
+    ///
+    /// - a `Deny` ends the evaluation and is the decision; later checks do
+    ///   not run;
+    /// - a required check that returns `None` is a deny,
+    ///   [`closed::REQUIRED_UNDECIDED`], and ends the evaluation the same way;
+    /// - an `Allow` or a `Degrade` does **not** end the evaluation, so a later
+    ///   check can still deny.
+    ///
+    /// When every check has run without a deny, the decision is the first
+    /// `Degrade` if there was one, else an allow ([`closed::AFFIRMED`]) if at
+    /// least one check returned `Allow`, else a deny
+    /// ([`closed::NO_CHECK_DECIDED`]). Every deny the gate itself produces is
+    /// blocking; a check's own decision is returned unchanged.
+    Closed,
+}
+
+/// The stable reason codes a [`Mode::Closed`] gate produces itself (spec 003
+/// B-6). A check's own decision keeps the check's reason.
+pub mod closed {
+    /// No check returned `Some`. `check_ids` lists every check that ran, in
+    /// order (empty for a gate with no checks).
+    pub const NO_CHECK_DECIDED: &str = "gate:deny:closed:no_check_decided";
+    /// A required id names no registered check. `check_ids` lists every such
+    /// id, sorted; no check ran.
+    pub const REQUIRED_UNREGISTERED: &str = "gate:deny:closed:required_unregistered";
+    /// A required check ran and returned `None`. `check_ids` is that check's
+    /// id.
+    pub const REQUIRED_UNDECIDED: &str = "gate:deny:closed:required_undecided";
+    /// Every check ran, none denied or degraded, and at least one allowed.
+    /// `check_ids` lists the checks that allowed, in order.
+    pub const AFFIRMED: &str = "gate:allow:closed:affirmed";
+}
+
+/// Everything [`Gate::evaluate_exhaustive`] found: the decision
+/// [`Gate::evaluate`] returns, and every deny along the way.
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[non_exhaustive]
+pub struct Evaluation {
+    /// Equal to [`Gate::evaluate`] on the same context.
+    pub decision: Decision,
+    /// Every deny, in registration order: each check's own `Deny` and, in
+    /// [`Mode::Closed`], each deny the gate produced (an undecided required
+    /// check at its position, an unregistered requirement or the no-decision
+    /// deny alone). In closed mode the decision is a deny exactly when this is
+    /// non-empty, and is then its first element. In open mode an earlier
+    /// `Some` can decide before a listed deny is reached.
+    pub denials: Vec<Decision>,
+}
+
 /// A pure decision gate over an ordered list of checks.
 pub struct Gate {
     checks: Vec<Box<dyn Check>>,
+    mode: Mode,
+    required: BTreeSet<String>,
 }
 
 impl Gate {
@@ -61,15 +137,104 @@ impl Gate {
         GateBuilder::new()
     }
 
-    /// Evaluate `ctx` against the checks in order. The first check to return
-    /// `Some` wins; if none does, the gate allows.
+    /// Evaluate `ctx` against the checks in order, under the gate's [`Mode`].
+    ///
+    /// In [`Mode::Open`] (the default) the first check to return `Some` wins;
+    /// if none does, the gate allows. [`Mode::Closed`] is documented on the
+    /// variant.
     pub fn evaluate(&self, ctx: &ActionContext) -> Decision {
+        match self.mode {
+            Mode::Open => {
+                for check in &self.checks {
+                    if let Some(decision) = check.evaluate(ctx) {
+                        return decision;
+                    }
+                }
+                Decision::allow()
+            }
+            Mode::Closed => self.evaluate_closed(ctx, false).decision,
+        }
+    }
+
+    /// Evaluate `ctx` and also collect every deny (spec 003 B-8).
+    ///
+    /// Every check runs, including those after the deciding one, so a
+    /// consumer that reports all of its reasons can read them in registration
+    /// order. The decision is the one [`Gate::evaluate`] returns.
+    pub fn evaluate_exhaustive(&self, ctx: &ActionContext) -> Evaluation {
+        match self.mode {
+            Mode::Open => {
+                let denials = self
+                    .checks
+                    .iter()
+                    .filter_map(|c| c.evaluate(ctx))
+                    .filter(|d| d.outcome == Outcome::Deny)
+                    .collect();
+                Evaluation {
+                    decision: self.evaluate(ctx),
+                    denials,
+                }
+            }
+            Mode::Closed => self.evaluate_closed(ctx, true),
+        }
+    }
+
+    /// The closed-mode rules of [`Mode::Closed`]. With `exhaustive`, a deny
+    /// does not stop the walk; the decision is the same either way.
+    fn evaluate_closed(&self, ctx: &ActionContext, exhaustive: bool) -> Evaluation {
+        let missing = self.unregistered_required();
+        if !missing.is_empty() {
+            let deny = Decision::deny(
+                closed::REQUIRED_UNREGISTERED,
+                missing.into_iter().map(String::from).collect(),
+            )
+            .blocking();
+            return Evaluation {
+                decision: deny.clone(),
+                denials: vec![deny],
+            };
+        }
+
+        let mut denials = Vec::new();
+        let mut degrade = None;
+        let mut allowed = Vec::new();
+        let mut ran = Vec::new();
         for check in &self.checks {
-            if let Some(decision) = check.evaluate(ctx) {
-                return decision;
+            let id = check.id();
+            ran.push(id.to_string());
+            match check.evaluate(ctx) {
+                Some(d) if d.outcome == Outcome::Deny => denials.push(d),
+                Some(d) if d.outcome == Outcome::Degrade => {
+                    degrade.get_or_insert(d);
+                }
+                Some(_) => allowed.push(id.to_string()),
+                None if self.required.contains(id) => denials.push(
+                    Decision::deny(closed::REQUIRED_UNDECIDED, vec![id.to_string()]).blocking(),
+                ),
+                None => {}
+            }
+            if !exhaustive && !denials.is_empty() {
+                break;
             }
         }
-        Decision::allow()
+
+        let decision = if let Some(first) = denials.first() {
+            first.clone()
+        } else if let Some(d) = degrade {
+            d
+        } else if !allowed.is_empty() {
+            Decision {
+                outcome: Outcome::Allow,
+                reason: closed::AFFIRMED.into(),
+                check_ids: allowed,
+                blocking: false,
+            }
+        } else {
+            let deny = Decision::deny(closed::NO_CHECK_DECIDED, ran).blocking();
+            denials.push(deny.clone());
+            deny
+        };
+        Evaluation { decision, denials }
     }
 
     /// The ids of the registered checks, in evaluation order.
@@ -77,8 +242,36 @@ impl Gate {
         self.checks.iter().map(|c| c.id()).collect()
     }
 
-    /// A stable `sha256:<hex>` hash of the gate's configuration: the ordered
-    /// list of each check's [`config_fingerprint`](Check::config_fingerprint).
+    /// The gate's evaluation mode.
+    pub fn mode(&self) -> Mode {
+        self.mode
+    }
+
+    /// The required check ids, sorted. Empty for an open gate.
+    pub fn required_ids(&self) -> Vec<&str> {
+        self.required.iter().map(String::as_str).collect()
+    }
+
+    /// The required ids that name no registered check, sorted. A closed gate
+    /// with any denies every action ([`closed::REQUIRED_UNREGISTERED`]); a
+    /// consumer can call this at startup to refuse the configuration early.
+    pub fn unregistered_required(&self) -> Vec<&str> {
+        self.required
+            .iter()
+            .filter(|id| !self.checks.iter().any(|c| c.id() == id.as_str()))
+            .map(String::as_str)
+            .collect()
+    }
+
+    /// A stable `sha256:<hex>` hash of the gate's configuration.
+    ///
+    /// In [`Mode::Open`] it is taken over the canonical JSON array of each
+    /// check's [`config_fingerprint`](Check::config_fingerprint), in order,
+    /// exactly as in 0.1.0 and 0.2.0, so a recorded hash does not move. In
+    /// [`Mode::Closed`] it is taken over the canonical JSON object
+    /// `{"checks": [...], "mode": "closed", "required": [...]}` with the
+    /// required ids sorted. An object never serializes like an array, so a
+    /// closed gate never hashes the same as an open one.
     ///
     /// Record this in a ledger alongside a decision to prove the decision came
     /// from exactly this gate configuration. Because it is order-sensitive and
@@ -87,7 +280,16 @@ impl Gate {
     pub fn config_hash(&self) -> String {
         let fingerprints: Vec<String> =
             self.checks.iter().map(|c| c.config_fingerprint()).collect();
-        let value = serde_json::to_value(&fingerprints).expect("fingerprints serialise to JSON");
+        let value = match self.mode {
+            Mode::Open => {
+                serde_json::to_value(&fingerprints).expect("fingerprints serialise to JSON")
+            }
+            Mode::Closed => serde_json::json!({
+                "checks": fingerprints,
+                "mode": "closed",
+                "required": self.required,
+            }),
+        };
         sha256_hex(canonical_keysort_json::to_canonical_string(&value).as_bytes())
     }
 }
@@ -99,6 +301,10 @@ impl Gate {
 /// an earlier check returns `Some(Decision::allow())`. Checks registered after
 /// it never run. It is never added implicitly; see also
 /// [`GateBuilder::build_deny_by_default`].
+///
+/// It belongs to [`Mode::Open`]. A [`Mode::Closed`] gate does not stop at an
+/// allow, so this check would deny every action there; a closed gate denies
+/// undecided actions by itself.
 ///
 /// The deny is blocking, so a trust layer downstream cannot reopen a gate its
 /// operator explicitly closed.
@@ -142,12 +348,14 @@ impl Check for DenyByDefault {
 #[derive(Default)]
 pub struct GateBuilder {
     checks: Vec<Box<dyn Check>>,
+    mode: Mode,
+    required: BTreeSet<String>,
 }
 
 impl GateBuilder {
-    /// A builder with no checks.
+    /// A builder with no checks, in [`Mode::Open`].
     pub fn new() -> Self {
-        Self { checks: Vec::new() }
+        Self::default()
     }
 
     /// Register a check. Checks evaluate in the order they are registered.
@@ -164,15 +372,81 @@ impl GateBuilder {
         self
     }
 
+    /// Evaluate in [`Mode::Closed`]: deny when no check decides.
+    ///
+    /// ```
+    /// use action_gate_core::{closed, ActionContext, Check, Decision, Gate};
+    ///
+    /// struct AllowRead;
+    /// impl Check for AllowRead {
+    ///     fn id(&self) -> &str { "allow-read" }
+    ///     fn evaluate(&self, ctx: &ActionContext) -> Option<Decision> {
+    ///         (ctx.action == "read").then(Decision::allow)
+    ///     }
+    /// }
+    ///
+    /// let gate = Gate::builder().check(AllowRead).closed().build();
+    /// assert!(gate.evaluate(&ActionContext::new("read")).is_allow());
+    /// let d = gate.evaluate(&ActionContext::new("write"));
+    /// assert_eq!(d.reason, closed::NO_CHECK_DECIDED);
+    /// assert!(d.blocking);
+    /// ```
+    #[must_use]
+    pub fn closed(mut self) -> Self {
+        self.mode = Mode::Closed;
+        self
+    }
+
+    /// Require the check with `id`: it must be registered and must return
+    /// `Some` on every evaluation, or the gate denies. Requiring a check puts
+    /// the gate in [`Mode::Closed`]; there is no open gate with requirements.
+    /// The requirement may be stated before or after the check is registered.
+    ///
+    /// ```
+    /// use action_gate_core::{closed, ActionContext, Check, Decision, Gate};
+    ///
+    /// struct Scan;
+    /// impl Check for Scan {
+    ///     fn id(&self) -> &str { "scan" }
+    ///     fn evaluate(&self, _ctx: &ActionContext) -> Option<Decision> {
+    ///         Some(Decision::allow())
+    ///     }
+    /// }
+    ///
+    /// // Required but never registered: every action is denied.
+    /// let gate = Gate::builder().require("scan").build();
+    /// let d = gate.evaluate(&ActionContext::new("write"));
+    /// assert_eq!(d.reason, closed::REQUIRED_UNREGISTERED);
+    /// assert_eq!(d.check_ids, vec!["scan"]);
+    ///
+    /// let gate = Gate::builder().check(Scan).require("scan").build();
+    /// assert!(gate.evaluate(&ActionContext::new("write")).is_allow());
+    /// ```
+    #[must_use]
+    pub fn require(mut self, id: impl Into<String>) -> Self {
+        self.required.insert(id.into());
+        self.mode = Mode::Closed;
+        self
+    }
+
+    /// Require every id in `ids`; see [`require`](Self::require).
+    #[must_use]
+    pub fn require_all(self, ids: impl IntoIterator<Item = impl Into<String>>) -> Self {
+        ids.into_iter().fold(self, |b, id| b.require(id))
+    }
+
     /// Finish building.
     pub fn build(self) -> Gate {
         Gate {
             checks: self.checks,
+            mode: self.mode,
+            required: self.required,
         }
     }
 
     /// Register [`DenyByDefault`] as the terminal check and finish building:
-    /// the gate denies any action no earlier check decides.
+    /// the gate denies any action no earlier check decides. An open-mode
+    /// shorthand; see [`DenyByDefault`] on combining it with [`closed`](Self::closed).
     pub fn build_deny_by_default(self) -> Gate {
         self.check(DenyByDefault).build()
     }
