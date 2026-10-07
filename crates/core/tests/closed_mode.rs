@@ -1,4 +1,4 @@
-//! Spec 003: the closed evaluation mode. FR-003 to FR-009.
+//! Spec 004: the closed evaluation mode. FR-003 to FR-009.
 
 use std::collections::BTreeMap;
 use std::sync::Arc;
@@ -230,7 +230,8 @@ fn counting(id: &'static str, answer: Option<Outcome>) -> (Counting, Arc<AtomicU
 }
 
 /// FR-006: an unregistered requirement denies before any check runs, and a
-/// deny ends `evaluate` while `evaluate_exhaustive` runs every check.
+/// deny ends `evaluate` while `evaluate_exhaustive` runs every check, once,
+/// in either mode.
 #[test]
 fn fr006_what_runs() {
     let (a, a_calls) = counting("a", Some(Outcome::Allow));
@@ -263,6 +264,27 @@ fn fr006_what_runs() {
     assert_eq!(e.decision, d);
     assert_eq!(e.denials.len(), 2);
     assert_eq!(e.denials[1].check_ids, vec!["after"]);
+
+    // Open mode: exhaustive runs every check exactly once, before and after
+    // the deciding one.
+    let (first, first_calls) = counting("first", None);
+    let (decides, decides_calls) = counting("decides", Some(Outcome::Allow));
+    let (later, later_calls) = counting("later", Some(Outcome::Deny));
+    let gate = Gate::builder()
+        .check(first)
+        .check(decides)
+        .check(later)
+        .build();
+    let e = gate.evaluate_exhaustive(&ActionContext::new("x"));
+    assert_eq!(e.decision.outcome, Outcome::Allow);
+    assert_eq!(e.denials.len(), 1);
+    for (name, calls) in [
+        ("first", &first_calls),
+        ("decides", &decides_calls),
+        ("later", &later_calls),
+    ] {
+        assert_eq!(calls.load(Ordering::SeqCst), 1, "{name} ran once");
+    }
 }
 
 /// FR-007: a degrade does not end a closed evaluation, so a deny after it

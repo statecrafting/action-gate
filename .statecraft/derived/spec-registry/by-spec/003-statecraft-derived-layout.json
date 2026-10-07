@@ -1,0 +1,43 @@
+{
+  "record": {
+    "amends": [
+      "002-statecraft-profile-14"
+    ],
+    "created": "2026-10-04",
+    "dependsOn": [
+      "002-statecraft-profile-14"
+    ],
+    "id": "003-statecraft-derived-layout",
+    "implementation": "complete",
+    "obligations": [
+      {
+        "anchor": "3-layout-contract",
+        "id": "R-1",
+        "kind": "requirement",
+        "text": "spec-spine's derived_dir is .statecraft/derived, the committed registry and index live there, and no repository-root .derived/ remains."
+      }
+    ],
+    "sectionDigests": {
+      "003-derived-artifacts-under-statecraft-derived": "60a45dd5afd731204c9884f70032b9c40acea181a14c2f930b77059d73d58653",
+      "1-purpose": "d3b5c0e72633ef3a94c091dad1d4bb7da60fc8e980262b0b96d8db0ba195e390",
+      "2-territory": "e9e8f79c48061dcc4c7640942f9e149df53c524d8879b88e7c27a5b3fc136430",
+      "3-layout-contract": "e8a4b8f203cb04bd867cf9e28e30c53029056a2d0ca1f75849fdc92fc1e5c3f0",
+      "4-acceptance-criteria": "cc045b53c268ab377fa5861036ef57a7664a0bf2db6abc9ece732f3a4579c6e7",
+      "5-approval-basis": "b06da461322457f4413908c512b8b761f98e61d2b1db1fa73f9ccfbc0c580519"
+    },
+    "sectionHeadings": [
+      "003: Derived artifacts under .statecraft/derived",
+      "1. Purpose",
+      "2. Territory",
+      "3. Layout contract",
+      "4. Acceptance criteria",
+      "5. Approval basis"
+    ],
+    "specPath": "specs/003-statecraft-derived-layout/spec.md",
+    "status": "approved",
+    "summary": "Moves the committed spec registry and codebase index from the legacy repository-root `.derived/` to `.statecraft/derived/`, the location the adopted Statecraft profile revision 14 and its managed instructions, ignores and AI review exclusion already name. Only the layout changes: the shard contents, the spec-spine pin, the CI profile and every managed file stay as they are.\n",
+    "title": "Move spec-spine's committed derived artifacts to .statecraft/derived"
+  },
+  "shardHash": "71b657ab82ca5eb229139584caa58d78018a00fa1b00ef6d116708e1d089c1eb",
+  "specVersion": "1.9.0"
+}

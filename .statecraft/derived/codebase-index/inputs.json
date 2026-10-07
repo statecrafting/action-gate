@@ -22,22 +22,22 @@
       "contentHash": "cac025a6b4350ef24a9db0a260c8bfe75e5421205aea74228fca5032f06f865a"
     },
     "crates/core/src/lib.rs": {
-      "contentHash": "e67a73e2811ec43db04557985c7276b2dedbc0dc9ae0849837619cb72d50debb"
+      "contentHash": "adaaccccee76846409c9b04d04bfb58d4e5f5bfd47a80e2a39cc8bd78e3ef6ac"
     },
     "crates/core/src/secrets.rs": {
       "contentHash": "88947b7641ffd96b0f9c469b9a37d7298ac57cb855324100e2ade2f2faa4f5cc"
     },
     "crates/core/testdata/closed-mode-vectors.json": {
-      "contentHash": "a509027d71e1b2bb642863e2b1f4cbb4c8924a2a9018cb8113798f29b79d67f7"
+      "contentHash": "45436e70ad72845b94c1130729dee8c768e825113685ead1c10a6ac9b995b34f"
     },
     "crates/core/testdata/secret-vectors.json": {
       "contentHash": "1835e672ba109ea7896d9525845408691b72f4bb0305e4f07cf812482bc7916d"
     },
     "crates/core/tests/closed_mode.rs": {
-      "contentHash": "4146106fe09224fe01b5db268031ffe938bc200b6132e1d97d47285d38d261ea"
+      "contentHash": "67fe4abf513456f7c4d6475b71cd5cfafd5a0812612fec867baaf729b81ebb76"
     },
     "crates/core/tests/open_mode_compat.rs": {
-      "contentHash": "f6877832670fd7879103c91b26c2b045158b4b08af711d607d34039b2e19eba7"
+      "contentHash": "7ec46abb339e9b8e645eaef132afb6baf223c9fac6eea6134c6728936a8252a8"
     },
     "crates/core/tests/secret_properties.rs": {
       "contentHash": "29a1c22b5b2df4746d9add10b4fe7c33f4f8a17d6ee42c0ae80f525e35b1b088"
@@ -52,7 +52,7 @@
       "contentHash": "6f55bd690a4f88f0c5a9687c7aafa943523b294a54f9c1521a722caa4aa8bb52"
     },
     "spec-spine.toml": {
-      "contentHash": "fd6761eb7e598f46d7c2481e0e1b6fde02fae29b36dacce9a7509e7a44c6734f"
+      "contentHash": "f2bcfdd530777c8906365a26451d78c9ac15f9368ab2cc951cee54190d89e481"
     },
     "standards/spec/constitution.md": {
       "contentHash": "a84dc81e5891d6045edd134b66d336ab45fec254fbdad71e33b54e8997e9309b"

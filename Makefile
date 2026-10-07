@@ -36,7 +36,8 @@ code:
 	cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 	cargo fmt --all --check
 
-# Regenerate the committed .derived/ after changing specs or claimed sources.
+# Regenerate the committed .statecraft/derived/ after changing specs or
+# claimed sources.
 derived:
 	$(SPEC_SPINE) compile
 	$(SPEC_SPINE) index

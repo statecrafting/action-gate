@@ -7,7 +7,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.3.0] - Unreleased
 
 `action-gate-core` 0.3.0 only; `action-gate-types` stays at 0.1.0 (unchanged,
-not republished). Additive (spec 003): every 0.2.0 gate evaluates and hashes
+not republished). Additive (spec 004): every 0.2.0 gate evaluates and hashes
 exactly as before.
 
 ### Added

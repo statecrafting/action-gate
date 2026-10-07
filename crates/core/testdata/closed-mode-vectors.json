@@ -1,5 +1,5 @@
 {
-  "spec": "003-closed-evaluation-mode",
+  "spec": "004-closed-evaluation-mode",
   "description": "Golden vectors for the closed evaluation mode. Each check is scripted: for an action in its answers it returns allow (Decision::allow()), deny (reason test:deny:<id>, check_ids [<id>], not blocking) or degrade (reason test:degrade:<id>); otherwise None. A scripted check's config fingerprint is its id. decision is what Gate::evaluate returns; denials is Evaluation::denials from Gate::evaluate_exhaustive.",
   "vectors": [
     {
@@ -283,7 +283,7 @@
     },
     {
       "id": "closed-006",
-      "title": "An allow does not end a closed evaluation: a later deny wins (open mode contrast).",
+      "title": "Open mode contrast to closed-007: an allow ends an open evaluation, so a later deny never decides.",
       "mode": "open",
       "required": [],
       "checks": [

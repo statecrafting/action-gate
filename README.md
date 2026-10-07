@@ -70,7 +70,7 @@ Always available, with no optional feature and no `regex`:
   decides; `GateBuilder::build_deny_by_default()` closes it instead, so only
   an explicit `Some(Decision::allow())` from an earlier check lets an action
   through.
-- Closed mode (spec 003): `GateBuilder::closed()` and
+- Closed mode (spec 004): `GateBuilder::closed()` and
   `GateBuilder::require(id)` / `require_all(ids)` build a gate that denies
   when no check decides, denies when a required check is unregistered or
   returns `None`, and does not stop at an allow or a degrade, so a later deny

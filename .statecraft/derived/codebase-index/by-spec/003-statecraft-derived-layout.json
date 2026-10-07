@@ -1,0 +1,15 @@
+{
+  "mapping": {
+    "amends": [
+      "002-statecraft-profile-14"
+    ],
+    "dependsOn": [
+      "002-statecraft-profile-14"
+    ],
+    "implementingPaths": [],
+    "specId": "003-statecraft-derived-layout",
+    "specStatus": "approved"
+  },
+  "schemaVersion": "1.2.0",
+  "shardHash": "71b657ab82ca5eb229139584caa58d78018a00fa1b00ef6d116708e1d089c1eb"
+}

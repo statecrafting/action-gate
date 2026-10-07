@@ -10,11 +10,6 @@
 /target
 **/*.rs.bk
 
-# NOTE: .derived/ (compiler/indexer output) is intentionally NOT ignored once
-# this repo's spec-spine self-governance lands; build-meta.json carries a
-# wall-clock builtAt (the sole non-deterministic artifact) and would churn.
-.derived/**/build-meta.json
-
 # Pinned tool installs (`make tools`: spec-spine, statecraft-cli)
 /.tooling/
 

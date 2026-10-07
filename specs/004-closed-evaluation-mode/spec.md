@@ -1,5 +1,5 @@
 ---
-id: "003-closed-evaluation-mode"
+id: "004-closed-evaluation-mode"
 title: "Closed evaluation mode: deny by default, required checks, and every deny in order"
 status: draft
 created: "2026-10-07"
@@ -35,7 +35,7 @@ references:
   - { unit: { kind: file, path: "README.md" }, role: context }
 ---
 
-# 003: Closed evaluation mode
+# 004: Closed evaluation mode
 
 ## 1. Purpose
 
@@ -180,7 +180,8 @@ Out of scope, and left with the consumers as adapters (section 6):
 - **FR-005.** The default mode is open; `require` closes the gate; the
   accessors report sorted ids.
 - **FR-006.** An unregistered requirement denies before any check runs; a
-  deny ends `evaluate`; `evaluate_exhaustive` runs every check.
+  deny ends `evaluate`; `evaluate_exhaustive` runs every check exactly once,
+  in either mode.
 - **FR-007.** A degrade before a deny yields the deny; with no deny, the
   first degrade outranks any allow; a required check that degrades passes
   B-4.

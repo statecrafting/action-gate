@@ -1,4 +1,4 @@
-//! Spec 003 FR-001 and FR-002: the open (0.2.0) evaluation mode is unchanged.
+//! Spec 004 FR-001 and FR-002: the open (0.2.0) evaluation mode is unchanged.
 //!
 //! Every literal below was captured by running this file, unmodified, against
 //! action-gate-core 0.2.0 (commit 6cfa81e) before the closed mode existed.

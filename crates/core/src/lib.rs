@@ -58,7 +58,7 @@ pub mod checks;
 
 pub mod secrets;
 
-/// How a [`Gate`] combines its checks' answers (spec 003).
+/// How a [`Gate`] combines its checks' answers (spec 004).
 ///
 /// The mode is part of [`Gate::config_hash`]: a closed gate never hashes the
 /// same as an open one, whatever its checks.
@@ -91,7 +91,7 @@ pub enum Mode {
     Closed,
 }
 
-/// The stable reason codes a [`Mode::Closed`] gate produces itself (spec 003
+/// The stable reason codes a [`Mode::Closed`] gate produces itself (spec 004
 /// B-6). A check's own decision keeps the check's reason.
 pub mod closed {
     /// No check returned `Some`. `check_ids` lists every check that ran, in
@@ -156,22 +156,26 @@ impl Gate {
         }
     }
 
-    /// Evaluate `ctx` and also collect every deny (spec 003 B-8).
+    /// Evaluate `ctx` and also collect every deny (spec 004 B-8).
     ///
-    /// Every check runs, including those after the deciding one, so a
+    /// Every check runs exactly once, including those after the deciding one, so a
     /// consumer that reports all of its reasons can read them in registration
     /// order. The decision is the one [`Gate::evaluate`] returns.
     pub fn evaluate_exhaustive(&self, ctx: &ActionContext) -> Evaluation {
         match self.mode {
             Mode::Open => {
-                let denials = self
-                    .checks
-                    .iter()
-                    .filter_map(|c| c.evaluate(ctx))
-                    .filter(|d| d.outcome == Outcome::Deny)
-                    .collect();
+                let mut decision = None;
+                let mut denials = Vec::new();
+                for check in &self.checks {
+                    if let Some(d) = check.evaluate(ctx) {
+                        if d.outcome == Outcome::Deny {
+                            denials.push(d.clone());
+                        }
+                        decision.get_or_insert(d);
+                    }
+                }
                 Evaluation {
-                    decision: self.evaluate(ctx),
+                    decision: decision.unwrap_or_else(Decision::allow),
                     denials,
                 }
             }
