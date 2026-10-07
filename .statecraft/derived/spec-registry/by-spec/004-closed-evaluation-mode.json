@@ -41,7 +41,7 @@
       }
     ],
     "id": "004-closed-evaluation-mode",
-    "implementation": "in-progress",
+    "implementation": "complete",
     "kind": "feature",
     "references": [
       {
@@ -97,10 +97,10 @@
       "Verification"
     ],
     "specPath": "specs/004-closed-evaluation-mode/spec.md",
-    "status": "draft",
+    "status": "approved",
     "summary": "Adds a second, opt-in evaluation mode to the Gate. A closed gate denies when no check decides, denies when a required check id names no registered check or a required check abstains, and does not stop at an allow or a degrade, so a later deny still decides. The gate's own denies carry stable reason codes and are blocking. An exhaustive evaluation returns every deny in registration order for consumers that report all of their reasons. The mode is part of the config hash, so a closed gate never hashes like an open one, while every open gate keeps its 0.2.0 hash and decision bytes. Written so statecraft-envelope's admission evaluator (statecraft-cli spec 007, the hosted platform's specs 003 and 004) and aicortex-gate (aicortex specs 013 and 051) can replace their hand-written evaluators with action-gate. Semver-minor (0.3.0).\n",
     "title": "Closed evaluation mode: deny by default, required checks, and every deny in order"
   },
-  "shardHash": "15b7aae32a7ccbdcb3c19f82ae91efe8f6803e4436784c209d382ab8b5ba7143",
+  "shardHash": "3938806b49d6085a18bb7afcac8f40a5459c47cbd27d6fb0a95e75b8b47d5466",
   "specVersion": "1.9.0"
 }

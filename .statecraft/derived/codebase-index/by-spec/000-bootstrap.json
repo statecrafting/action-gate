@@ -141,8 +141,8 @@
       }
     ],
     "specId": "000-bootstrap",
-    "specStatus": "draft"
+    "specStatus": "approved"
   },
   "schemaVersion": "1.2.0",
-  "shardHash": "fa16d6c24f9da60919e9937f5da7fc47635fc422eda7a2183da1d64a2e4c8e1d"
+  "shardHash": "686e25a57b145617bb39df26b8ad3ed05e755d6f0ce3950ed5f4023b9f02bf84"
 }

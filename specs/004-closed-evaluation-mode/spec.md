@@ -1,11 +1,11 @@
 ---
 id: "004-closed-evaluation-mode"
 title: "Closed evaluation mode: deny by default, required checks, and every deny in order"
-status: draft
+status: approved
 created: "2026-10-07"
 authors: ["action-gate"]
 kind: feature
-implementation: in-progress
+implementation: complete
 risk: medium
 summary: >
   Adds a second, opt-in evaluation mode to the Gate. A closed gate denies

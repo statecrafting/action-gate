@@ -120,8 +120,8 @@
       }
     ],
     "specId": "004-closed-evaluation-mode",
-    "specStatus": "draft"
+    "specStatus": "approved"
   },
   "schemaVersion": "1.2.0",
-  "shardHash": "15b7aae32a7ccbdcb3c19f82ae91efe8f6803e4436784c209d382ab8b5ba7143"
+  "shardHash": "3938806b49d6085a18bb7afcac8f40a5459c47cbd27d6fb0a95e75b8b47d5466"
 }
