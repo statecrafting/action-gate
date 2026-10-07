@@ -103,7 +103,8 @@ pub mod closed {
     /// A required check ran and returned `None`. `check_ids` is that check's
     /// id.
     pub const REQUIRED_UNDECIDED: &str = "gate:deny:closed:required_undecided";
-    /// Every check ran, none denied or degraded, and at least one allowed.
+    /// Every check ran; none denied or degraded, at least one allowed, and
+    /// any others abstained.
     /// `check_ids` lists the checks that allowed, in order.
     pub const AFFIRMED: &str = "gate:allow:closed:affirmed";
 }
