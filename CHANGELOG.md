@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Documentation only; no crate is released.
+
+### Changed
+
+- README: states plainly that the default mode, `Mode::Open`, allows when no
+  check returns `Some` (`gate:allow:no_check_triggered`), so an empty gate or
+  a gate whose checks all abstain allows every action. Deny by default needs
+  `GateBuilder::closed()` (or `require(id)`). Adds an example contrasting the
+  two modes.
+
 ## [0.3.0] - 2026-10-07
 
 `action-gate-core` 0.3.0 only; `action-gate-types` stays at 0.1.0 (unchanged,
@@ -34,7 +46,8 @@ exactly as before.
 
 ### Unchanged
 
-- The default mode, `Gate::evaluate` on an open gate, `DenyByDefault`,
+- The default mode (`Mode::Open`, which allows when no check decides),
+  `Gate::evaluate` on an open gate, `DenyByDefault`,
   `build_deny_by_default()` and the secret registry and its golden vectors.
 - `Gate::config_hash` of an open gate, over the fingerprint array, so a
   recorded hash does not move.

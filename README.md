@@ -20,6 +20,41 @@ let decision = gate.evaluate(&ActionContext::new("email.send"));
 assert!(decision.is_allow());
 ```
 
+## Default: allow on fallthrough
+
+A gate built with `Gate::builder()...build()` is in open mode, the default.
+**When no check returns `Some`, an open gate allows**
+(`gate:allow:no_check_triggered`). An empty gate allows every action, and so
+does a gate whose checks all abstain. If an action must be denied unless a
+check affirmatively allows it, build the gate with `GateBuilder::closed()` (or
+`require(id)`, which also closes it):
+
+```rust
+use action_gate_core::{closed, ActionContext, Check, Decision, Gate};
+
+struct AllowRead;
+impl Check for AllowRead {
+    fn id(&self) -> &str { "allow-read" }
+    fn evaluate(&self, ctx: &ActionContext) -> Option<Decision> {
+        (ctx.action == "read").then(Decision::allow)
+    }
+}
+
+// Open (default): AllowRead abstains on "write", so the gate allows it.
+let open = Gate::builder().check(AllowRead).build();
+assert!(open.evaluate(&ActionContext::new("write")).is_allow());
+
+// Closed: the same abstention is a blocking deny.
+let gate = Gate::builder().check(AllowRead).closed().build();
+assert!(gate.evaluate(&ActionContext::new("read")).is_allow());
+let d = gate.evaluate(&ActionContext::new("write"));
+assert_eq!(d.reason, closed::NO_CHECK_DECIDED);
+assert!(d.blocking);
+```
+
+`build_deny_by_default()` is an older open-mode shorthand that appends a
+terminal `DenyByDefault` check; prefer `closed()` for new gates.
+
 ## The shape
 
 - **`ActionContext`**: `action`, `payload_summary`, `payload_body`, and an
