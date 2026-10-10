@@ -5,7 +5,7 @@ status: approved
 created: "2026-07-14"
 authors: ["action-gate"]
 kind: tooling
-implementation: pending
+implementation: complete
 risk: low
 summary: >
   Bootstrap spec for the action-gate repository: a two-crate pure, deterministic
@@ -108,3 +108,29 @@ checks plus the two common ones, mapping the generic `Decision` back to its
   the id changes: the status, claims and text of this spec are unchanged,
   and so are the crates it establishes, apart from the
   `[package.metadata.action-gate] spec` key in both crate manifests.
+
+## 7. Implementation record
+
+Recorded 2026-10-10 against `main` at `cc80b79` (action-gate-core 0.3.0,
+action-gate-types 0.1.0). Every obligation in §2 and §4 is met:
+
+- The six established units exist. `Cargo.toml` declares the two members,
+  Apache-2.0, edition 2024 and `unsafe_code = "forbid"`; both crate
+  manifests carry `[package.metadata.action-gate] spec = "000-bootstrap"`.
+- `crates/types/src/lib.rs` defines `ActionContext`, `Outcome`, `Decision`
+  and the `Check` trait with its default `config_fingerprint`.
+- `crates/core/src/lib.rs` defines `Gate`, `GateBuilder`, `Gate::evaluate`
+  (in the default open mode the first `Some` wins, else allow),
+  `Gate::config_hash` and `decision_to_canonical_json`, the last over
+  `canonical-keysort-json`.
+- `crates/core/src/checks.rs` defines `SecretsCheck` and `AllowlistCheck`,
+  compiled only with the `checks-common` feature.
+- Unit tests cover each claim: `empty_gate_allows`,
+  `first_matching_check_wins`, `non_matching_checks_pass_through_to_allow`,
+  `config_hash_is_stable_and_order_sensitive` and
+  `decision_canonical_json_is_byte_stable` in `crates/core`, the
+  constructor tests in `crates/types`, and the five `checks-common` tests.
+  `make code` (build, `--all-features` test and clippy, rustfmt) passes.
+
+Later specs extend these units additively (001 the secret registry, 004 the
+closed mode); none changes the open-mode contract stated here.
