@@ -7,16 +7,16 @@
       "contentHash": "1b8acbb7f5ddf4ad53c265c9d57b2284e44053a3ffcf8d7e455517a048ae349b"
     },
     ".github/workflows/statecraft-ai-review.yml": {
-      "contentHash": "cd73dc1e84948114345d9b50c517d7172053d66e49eaa8c6872ccb11fc0bf57a"
+      "contentHash": "35676b9f4c20fe495fbdf4ef5a2a7944503d2002af96c92da34e0b7a1f2e4150"
     },
     ".github/workflows/statecraft-ci.yml": {
-      "contentHash": "7aadad69fa5998f0cd276f478efa9d20b39a657d9ac0c933fa2d371e203c0e66"
+      "contentHash": "a6406ef20070c5477ae0693e32bf10d5ff43d0d36a5dd1332b2775d3a6389db5"
     },
     "Cargo.toml": {
-      "contentHash": "fe16074bf503e53b8af2727371f7b2c4f731431d36d342f2a3b26929089842f2"
+      "contentHash": "a1f37bf2c11e72561f93f753244d45f98e1ba851f8deec12ade0ada4f699ca8f"
     },
     "crates/core/Cargo.toml": {
-      "contentHash": "12e65bf00d073aabecfd3ed95392f726aa34aa055717e87c9ce8ffe4944ddc86"
+      "contentHash": "250526db06db07918db5b3d3d1a4c85761cd8b2d2519caaf415af28369511de8"
     },
     "crates/core/src/checks.rs": {
       "contentHash": "cac025a6b4350ef24a9db0a260c8bfe75e5421205aea74228fca5032f06f865a"
@@ -46,13 +46,13 @@
       "contentHash": "19c2cf6cacb22c9f36fc35674fe52f238628f20f5527104f561db34d654a2390"
     },
     "crates/types/Cargo.toml": {
-      "contentHash": "b6d8f61d4365109f4aaffaaad6ac70bd775f23e23ec8454a1825fb7bc379d118"
+      "contentHash": "657b9efc8e56a2fc6f7ff48cb0c4bd2d23740ac7d207f7b180e7f8dbb8b3e3e7"
     },
     "crates/types/src/lib.rs": {
       "contentHash": "6f55bd690a4f88f0c5a9687c7aafa943523b294a54f9c1521a722caa4aa8bb52"
     },
     "spec-spine.toml": {
-      "contentHash": "f2bcfdd530777c8906365a26451d78c9ac15f9368ab2cc951cee54190d89e481"
+      "contentHash": "d6ee0f25ba9925b4589adb589f09fac4903da68db3e187c42a530eaafc944f99"
     },
     "standards/spec/constitution.md": {
       "contentHash": "a84dc81e5891d6045edd134b66d336ab45fec254fbdad71e33b54e8997e9309b"
@@ -67,5 +67,5 @@
       "contentHash": "ff016dd58ed2e6e59fed062a49961c76496b37a7a60d1f321af75b76574eef4f"
     }
   },
-  "schemaVersion": "1.2.0"
+  "schemaVersion": "1.3.0"
 }

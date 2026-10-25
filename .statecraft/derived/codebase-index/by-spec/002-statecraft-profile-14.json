@@ -6,10 +6,35 @@
     "dependsOn": [
       "001-secret-detector-parity"
     ],
-    "implementingPaths": [],
+    "implementingPaths": [
+      {
+        "path": "AGENTS.md",
+        "source": "spec-edge"
+      }
+    ],
+    "resolvedUnits": [
+      {
+        "locations": [
+          {
+            "file": "AGENTS.md",
+            "span": {
+              "endLine": 22,
+              "startLine": 5
+            }
+          }
+        ],
+        "ownership": true,
+        "sourceField": "refines",
+        "unit": {
+          "anchor": "continuous-integration",
+          "file": "AGENTS.md",
+          "kind": "section"
+        }
+      }
+    ],
     "specId": "002-statecraft-profile-14",
     "specStatus": "approved"
   },
-  "schemaVersion": "1.2.0",
-  "shardHash": "41a6d2ac309ef494121b00be2eb2a9ec9729f81f1ab99df53ba137fa8844dbf0"
+  "schemaVersion": "1.3.0",
+  "shardHash": "161d3775941518d20b2c308a2f4c20c2bf13aaf19b84183070e862f73cbeee21"
 }

@@ -14,6 +14,12 @@ amends:
   - "001-secret-detector-parity"
 depends_on:
   - "001-secret-detector-parity"
+refines:
+  - aspect: "current-profile-revision"
+    unit:
+      kind: section
+      file: "AGENTS.md"
+      anchor: "continuous-integration"
 obligations:
   - id: "R-1"
     kind: requirement
@@ -91,3 +97,36 @@ the reviewer CLI remains 2.1.116. Local governance passed for the rendered
 candidate; its signed commit and regenerated lifecycle shards are checked
 again before submission. Actual hosted checks, AI review, scoped owner
 Environment approval and any required merge group must pass before landing.
+
+## 7. Revision 21 and spec-spine 0.31.0 refresh (2026-10-28)
+
+The owner directed the Statecraft profile revision 21 and spec-spine 0.31.0
+fleet rollout. Statecraft CLI main at
+`167a02f3ce69472c029bdd64d0bcd04421e3df75` registers `github-actions-rust`
+revision 21 and links spec-spine-core 0.31.0. Its plan withholds the whole
+profile while this repository pins `=0.28.0`, because that pin does not admit
+the linked producer, so the pin move and the profile upgrade are one change.
+This section records that consent; sections 3 to 6 remain the historical
+record of the revision 14 migration.
+
+- The exact pin moves to `required_version = "=0.31.0"` in `spec-spine.toml`,
+  installed at `.bin/spec-spine`. This supersedes the `=0.28.0` pin in
+  section 3, section 4 and R-1; the environment's engine and producer
+  versions agree at 0.31.0.
+- Profile revision 21 replaces revision 14. Revisions 15 to 21 arrive
+  together: the rendered remote desired-state document, governance documents
+  read by the AI review as base blobs, a required preflight job with
+  job-level concurrency, failure summaries with the cache artifact drop, the
+  AI review stall watchdog, and the AI review verdict published as a
+  `statecraft-ai-review` check run.
+- The rendered profile is revision 21 with renderer identity
+  `29183723d833fc7b8c332dbac0e83edfb15eafe2ffc50f01c817f89a70785217`. The
+  reviewed setup plan identity is
+  `2efe8b8ee5421a3dbe6adf85f3f1fa5212e4c1a671d0d97c641460025631d0bb`.
+  Managed files are produced through plan and apply, never hand-edited.
+- The recorded setup parameters, the ordinary Rust code gate and the required
+  all-features job are retained. That job, the preflight job, ordinary code
+  and governance must pass through the required `ci-gate`. The reviewer CLI
+  remains 2.1.116.
+- The `AGENTS.md` "Continuous integration" section states revision 21; this
+  spec refines that statement.
