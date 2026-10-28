@@ -6,6 +6,6 @@
     "specRef": "000-bootstrap",
     "version": "0.1.0"
   },
-  "schemaVersion": "1.2.0",
+  "schemaVersion": "1.3.0",
   "shardHash": "ca813a00261ed90bea75a541656334b7cbeddd71e6ab09fcb8eabfc166c8905a"
 }

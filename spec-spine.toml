@@ -8,7 +8,7 @@
 # .statecraft/derived/ (spec 003).
 
 [meta]
-required_version = "=0.28.0"
+required_version = "=0.31.0"
 
 [manifest]
 metadata_namespace = "action-gate"
