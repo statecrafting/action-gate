@@ -14,7 +14,13 @@ amends:
   - "001-secret-detector-parity"
 depends_on:
   - "001-secret-detector-parity"
+establishes:
+  - "deny.toml"
 refines:
+  - aspect: "exact-governance-engine-pin"
+    unit: "spec-spine.toml"
+  - aspect: "supply-chain-policy-hashed-input"
+    unit: "spec-spine.toml"
   - aspect: "current-profile-revision"
     unit:
       kind: section
@@ -130,3 +136,23 @@ record of the revision 14 migration.
   remains 2.1.116.
 - The `AGENTS.md` "Continuous integration" section states revision 21; this
   spec refines that statement.
+
+## 8. Revision 29 prerequisites: spec-spine 0.32.0 and deny.toml (2026-11-26)
+
+The owner directed on 2026-11-26 that every Statecraft-governed repository
+adopt `github-actions-rust` revision 29. Statecraft CLI main at
+`68832a2a97b9b53151a1f2e365a13ef65a5a6d39` registers revision 29 and links
+spec-spine-core 0.32.0. Its plan withholds the whole profile for two unmet
+prerequisites: the pin `=0.31.0` does not admit the linked producer, and
+revision 22 requires a committed `deny.toml`, which Statecraft never writes.
+Revision 22 also renders a policy-isolation guard that refuses a change to
+`spec-spine.toml`, `deny.toml` or any Cargo manifest beside other paths, so
+this policy step lands first and alone, and the render follows.
+
+- The exact pin moves to `required_version = "=0.32.0"`, installed at
+  `.bin/spec-spine`. This supersedes section 7's `=0.31.0`.
+- `deny.toml` denies yanked crates, unknown registries and git sources, and
+  wildcard registry requirements (a path dependency is exempt, `allow-wildcard-paths`), and allows the licenses the dependency graph uses
+  (Apache-2.0, MIT, Unicode-3.0). The lockfile passes it with no advisory,
+  ban, license or source error. It joins the index's hashed inputs.
+- No managed file changes; the managed installer already reads the pin.

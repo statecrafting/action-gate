@@ -4,6 +4,7 @@
       "action-gate"
     ],
     "created": "2026-10-07",
+    "declaresAcceptance": true,
     "dependsOn": [
       "000-bootstrap",
       "001-secret-detector-parity"
@@ -102,5 +103,5 @@
     "title": "Closed evaluation mode: deny by default, required checks, and every deny in order"
   },
   "shardHash": "3938806b49d6085a18bb7afcac8f40a5459c47cbd27d6fb0a95e75b8b47d5466",
-  "specVersion": "1.10.0"
+  "specVersion": "1.11.0"
 }

@@ -51,8 +51,11 @@
     "crates/types/src/lib.rs": {
       "contentHash": "6f55bd690a4f88f0c5a9687c7aafa943523b294a54f9c1521a722caa4aa8bb52"
     },
+    "deny.toml": {
+      "contentHash": "8a7e119dfb5b07857b5c8bfb3ac49e6feb976edc53d9dd7afb2dd077657e0165"
+    },
     "spec-spine.toml": {
-      "contentHash": "d6ee0f25ba9925b4589adb589f09fac4903da68db3e187c42a530eaafc944f99"
+      "contentHash": "1d6523f19e0d1957305ee0c5b748002716e55c83b54724687d2bcf43bf3916cc"
     },
     "standards/spec/constitution.md": {
       "contentHash": "a84dc81e5891d6045edd134b66d336ab45fec254fbdad71e33b54e8997e9309b"

@@ -8,7 +8,7 @@
 # .statecraft/derived/ (spec 003).
 
 [meta]
-required_version = "=0.31.0"
+required_version = "=0.32.0"
 
 [manifest]
 metadata_namespace = "action-gate"
@@ -39,6 +39,7 @@ extra_hashed_inputs = [
   ".github/workflows/**/*",
   "Cargo.toml",
   "crates/**/*",
+  "deny.toml",
 ]
 resolver_exclusions = ["target", ".tooling", ".bin", ".statecraft/derived", "dist", "build"]
 
