@@ -152,7 +152,7 @@ this policy step lands first and alone, and the render follows.
 - The exact pin moves to `required_version = "=0.32.0"`, installed at
   `.bin/spec-spine`. This supersedes section 7's `=0.31.0`.
 - `deny.toml` denies yanked crates, unknown registries and git sources, and
-  wildcard dependencies, and allows the licenses the dependency graph uses
+  wildcard registry requirements (a path dependency is exempt, `allow-wildcard-paths`), and allows the licenses the dependency graph uses
   (Apache-2.0, MIT, Unicode-3.0). The lockfile passes it with no advisory,
   ban, license or source error. It joins the index's hashed inputs.
 - No managed file changes; the managed installer already reads the pin.
